@@ -30,7 +30,8 @@ class Buildable_reviews_Deactivator {
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
-
+		//delete_option
+		//drop tables
 	}
 
 }

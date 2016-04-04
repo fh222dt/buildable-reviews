@@ -20,7 +20,7 @@
  * @subpackage Plugin_Name/admin
  * @author     Your Name <email@example.com>
  */
-class Plugin_Name_Admin {
+class Buildable_reviews_admin {
 
 	/**
 	 * The ID of this plugin.

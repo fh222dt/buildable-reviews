@@ -15,7 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       Buildable reviews
  * Plugin URI:
- * Description:       Build your own custom review form & display the result with diagrams & top lits
+ * Description:       Build your own custom review form & display the result with diagrams & top lists.
  * Version:           1.0.0
  * Author:            Frida Holmström
  * Author URI:        http://fridaholmstrom.se/

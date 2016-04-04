@@ -30,6 +30,20 @@
 class Buildable_reviews {
 
 	/**
+	*Constants
+	*/
+	const
+	TABLE_NAME_REVIEW 								= 'br_review',
+	TABLE_NAME_REVIEW_QUESTION 						= 'br_review_question',
+	TABLE_NAME_REVIEW_QUESTION_TYPE 				= 'br_review_question_type',
+	TABLE_NAME_REVIEW_QUESTION_OPTION 				= 'br_review_question_option',
+	TABLE_NAME_REVIEW_QUESTION_OPTION_RELATION 		= 'br_review_question_option_relation',
+	TABLE_NAME_REVIEW_STATUS 						= 'br_review_status',
+	TABLE_NAME_REVIEW_VOTE 							= 'br_review_vote',
+	TABLE_NAME_REVIEW_VOTE_TYPE 					= 'br_review_vote_type',
+	TABLE_NAME_REVIEW_COMMENT 						= 'br_review_comment';
+
+	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
 	 * the plugin.
 	 *
@@ -100,24 +114,24 @@ class Buildable_reviews {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-plugin-name-loader.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-buildable-reviews-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-plugin-name-i18n.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-buildable-reviews-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-plugin-name-admin.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-buildable-reviews-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-plugin-name-public.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-buildable-reviews-public.php';
 
 		$this->loader = new Buildable_reviews_Loader();
 
@@ -149,7 +163,7 @@ class Buildable_reviews {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Buildable_reviews_Admin( $this->get_buildable_reviews(), $this->get_version() );
+		$plugin_admin = new Buildable_reviews_admin( $this->get_buildable_reviews(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
