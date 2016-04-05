@@ -29,3 +29,17 @@
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
+//delete options
+
+//drop tables
+global $wpdb;
+
+$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_OPTION_RELATION );
+$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_TYPE );
+$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_OPTION );
+$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION );
+$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_VOTE_TYPE );
+$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_VOTE);
+$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_STATUS );
+$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_COMMENT );
+$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW );

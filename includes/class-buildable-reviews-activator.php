@@ -148,5 +148,12 @@ class Buildable_reviews_Activator {
 
 
 		//user role to be able to edit reviews
-		//sample review???
+		$editor_role = get_role('editor');
+		$admin_role =get_role('administrator');
+
+		$editor_role->add_cap('br_edit_reviews');
+		$admin_role->add_cap('br_edit_reviews');
+
+
+		//TODO sample review???
 }
