@@ -144,7 +144,7 @@ class Buildable_reviews_Activator {
 			REFERENCES ' . $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION . '(question_id)
     		ON DELETE CASCADE';
  		$wpdb->query($fq_review_table_question);
-	}
+
 
 
 		//user role to be able to edit reviews
@@ -156,4 +156,5 @@ class Buildable_reviews_Activator {
 
 
 		//TODO sample review???
+	}
 }

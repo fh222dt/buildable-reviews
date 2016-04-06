@@ -29,7 +29,7 @@ class Buildable_reviews_admin {
 	 * @access   private
 	 * @var      string    $plugin_name    The ID of this plugin.
 	 */
-	private $plugin_name;
+	private $buildable_reviews;
 
 	/**
 	 * The version of this plugin.
@@ -44,15 +44,45 @@ class Buildable_reviews_admin {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of this plugin.
+	 * @param      string    $buildable_reviews       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct( $buildable_reviews, $version ) {
 
-		$this->plugin_name = $plugin_name;
+		$this->buildable_reviews = $buildable_reviews;
 		$this->version = $version;
 
 	}
+
+	/**
+	 * Admin menus
+	 */
+	public function add_admin_menus() {
+		add_menu_page(
+		'Manage Reviews',
+		'Reviews',
+		'manage_options',
+		$this->buildable_reviews,
+		plugins_url('buildable-reviews/admin/partials/buildable-reviews-admin-settings.php'),	//array($this, 'load_admin_page_content(buildable-reviews-admin-display.php)'),   //plugins_url('buildable-reviews\admin\partials\buildable-reviews-admin-display.php'),
+		'',
+		'3.99');
+
+		add_submenu_page(
+		$this->buildable_reviews,
+		'Settings',
+		'Settings',
+		'br_edit_reviews',
+		$this->buildable_reviews.'-settings',
+		plugins_url('buildable-reviews/admin/partials/buildable-reviews-admin-settings.php')		//array($this, load_admin_page_content(buildable-reviews-admin-settings.php))
+		);
+
+	}
+
+	public function load_admin_page_content($partial) {
+    	//require_once plugin_dir_path( __FILE__ ). 'partials/plugin-name-admin-display.php';
+		require_once plugins_url('buildable-reviews/admin/partials/'. $partial);
+	}
+
 
 	/**
 	 * Register the stylesheets for the admin area.
@@ -65,15 +95,15 @@ class Buildable_reviews_admin {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Plugin_Name_Loader as all of the hooks are defined
+		 * defined in buildable_reviews_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Plugin_Name_Loader will then create the relationship
+		 * The buildable_reviews_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/plugin-name-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->buildable_reviews, plugin_dir_url( __FILE__ ) . 'css/plugin-name-admin.css', array(), $this->version, 'all' );
 
 	}
 
@@ -96,7 +126,7 @@ class Buildable_reviews_admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/plugin-name-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->buildable_reviews, plugin_dir_url( __FILE__ ) . 'js/plugin-name-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
 
