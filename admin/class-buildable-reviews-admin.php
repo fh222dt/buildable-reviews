@@ -57,13 +57,16 @@ class Buildable_reviews_admin {
 	/**
 	 * Admin menus
 	 */
+
+	 //string $page_title, string $menu_title, string $capability,
+	 	//string $menu_slug, callable $function = '', string $icon_url = '', int $position = null
 	public function add_admin_menus() {
 		add_menu_page(
 		'Manage Reviews',
 		'Reviews',
-		'manage_options',
+		'br_edit_reviews',
 		$this->buildable_reviews,
-		plugins_url('buildable-reviews/admin/partials/buildable-reviews-admin-settings.php'),	//array($this, 'load_admin_page_content(buildable-reviews-admin-display.php)'),   //plugins_url('buildable-reviews\admin\partials\buildable-reviews-admin-display.php'),
+		'load_admin_page_content',	//array($this, 'load_admin_page_content(buildable-reviews-admin-display.php)'),   //plugins_url('buildable-reviews\admin\partials\buildable-reviews-admin-display.php'),
 		'',
 		'3.99');
 
@@ -73,14 +76,16 @@ class Buildable_reviews_admin {
 		'Settings',
 		'br_edit_reviews',
 		$this->buildable_reviews.'-settings',
-		plugins_url('buildable-reviews/admin/partials/buildable-reviews-admin-settings.php')		//array($this, load_admin_page_content(buildable-reviews-admin-settings.php))
+		array($this, 'load_admin_page_content')
 		);
 
 	}
 
-	public function load_admin_page_content($partial) {
-    	//require_once plugin_dir_path( __FILE__ ). 'partials/plugin-name-admin-display.php';
-		require_once plugins_url('buildable-reviews/admin/partials/'. $partial);
+	//So very dry, but callback from menu does NOT take args!
+	public function load_admin_page_content() {
+    	require_once plugin_dir_path( __FILE__ ). 'partials/buildable-reviews-admin-display.php';
+		//include(plugin_dir_path( __FILE__ ). 'partials/'. $partial); //buildable-reviews-admin-display.php');
+		//require_once plugins_url('buildable-reviews/admin/partials/'. $partial);
 	}
 
 

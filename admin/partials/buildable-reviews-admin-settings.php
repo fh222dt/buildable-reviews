@@ -11,5 +11,4 @@
  * @package    Plugin_Name
  * @subpackage Plugin_Name/admin/partials
  */
- ?>
- <p>Hello reviews!</p>
+ ?><?php esc_html_e( <p>Hello reviews!</p> ); ?><h1>HHHHHHHHHHHHHHHHHHHHHHHHHHH</h1>
