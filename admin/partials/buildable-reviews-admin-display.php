@@ -1,14 +1,37 @@
 <?php
 
 /**
- * Provide a admin area view for the plugin
- *
- * This file is used to markup the admin-facing aspects of the plugin.
- *
- * @link       http://example.com
- * @since      1.0.0
- *
- * @package    Plugin_Name
- * @subpackage Plugin_Name/admin/partials
+ * View listing all reviews
  */
-?><h1>Manage reviews</h1>
+?>
+<div class="wrap">
+    <h2>Mange reviews</h2>
+    <?php
+    if( isset( $_GET[ 'tab' ] ) ) {
+        $active_tab = $_GET[ 'tab' ];
+    }
+    else if( $active_tab == 'all-employers' ) {
+        $active_tab = 'all-employers';
+    }
+    else {
+        $active_tab = 'all-reviews';
+    }
+    ?>
+    <h2 class="nav-tab-wrapper">
+        <a href="?page=buildable-reviews&tab=all-reviews" class="nav-tab <?php echo $active_tab == 'all-reviews' ? 'nav-tab-active' : ''; ?>">All reviews</a>
+        <a href="?page=buildable-reviews&tab=all-employers" class="nav-tab <?php echo $active_tab == 'all-employers' ? 'nav-tab-active' : ''; ?>">All employers</a>
+    </h2>
+
+    <?php
+    if ($active_tab == 'all-reviews') {
+            //list table
+            $headings = ['ID', 'Företag', 'Samlat betyg', 'Datum', 'Status', 'Användare', 'Detaljer'];
+
+    }
+    else if ($active_tab == 'all-employers') {
+            //list table
+            $headings = ['ID', 'Företag', 'Samlat betyg', 'Senest recenserat', 'Antal', 'Visa alla'];
+    }
+    ?>
+
+</div>

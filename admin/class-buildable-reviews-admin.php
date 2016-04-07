@@ -56,10 +56,12 @@ class Buildable_reviews_admin {
 
 	/**
 	 * Admin menus
+	 * using this solution for parameter free callback: 
+	 * http://wordpress.stackexchange.com/questions/16415/passing-arguments-to-a-admin-menu-page-callback
+	 *
 	 */
 
-	 //string $page_title, string $menu_title, string $capability,
-	 	//string $menu_slug, callable $function = '', string $icon_url = '', int $position = null
+
 	public function add_admin_menus() {
 		$views = [];
 
