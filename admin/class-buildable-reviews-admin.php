@@ -61,16 +61,29 @@ class Buildable_reviews_admin {
 	 //string $page_title, string $menu_title, string $capability,
 	 	//string $menu_slug, callable $function = '', string $icon_url = '', int $position = null
 	public function add_admin_menus() {
-		add_menu_page(
+		$views = [];
+
+		$view_hook_name = add_menu_page(
 		'Manage Reviews',
 		'Reviews',
 		'br_edit_reviews',
 		$this->buildable_reviews,
-		'load_admin_page_content',	//array($this, 'load_admin_page_content(buildable-reviews-admin-display.php)'),   //plugins_url('buildable-reviews\admin\partials\buildable-reviews-admin-display.php'),
+		array($this, 'load_admin_page_content'),	//array($this, 'load_admin_page_content(buildable-reviews-admin-display.php)'),   //plugins_url('buildable-reviews\admin\partials\buildable-reviews-admin-display.php'),
 		'',
 		'3.99');
+		$this->views[$view_hook_name] = 'buildable-reviews-admin-display';
 
-		add_submenu_page(
+		$view_hook_name = add_submenu_page(
+		$this->buildable_reviews,
+		'Add Question',
+		'Add Question',
+		'br_edit_reviews',
+		$this->buildable_reviews.'-add-question',
+		array($this, 'load_admin_page_content')
+		);
+		$this->views[$view_hook_name] = 'buildable-reviews-admin-add-question';
+
+		$view_hook_name = add_submenu_page(
 		$this->buildable_reviews,
 		'Settings',
 		'Settings',
@@ -78,14 +91,14 @@ class Buildable_reviews_admin {
 		$this->buildable_reviews.'-settings',
 		array($this, 'load_admin_page_content')
 		);
+		$this->views[$view_hook_name] = 'buildable-reviews-admin-settings';
 
 	}
 
-	//So very dry, but callback from menu does NOT take args!
+	//Load the view for menu item
 	public function load_admin_page_content() {
-    	require_once plugin_dir_path( __FILE__ ). 'partials/buildable-reviews-admin-display.php';
-		//include(plugin_dir_path( __FILE__ ). 'partials/'. $partial); //buildable-reviews-admin-display.php');
-		//require_once plugins_url('buildable-reviews/admin/partials/'. $partial);
+		$current_views = $this->views[current_filter()];
+    	require_once plugin_dir_path( __FILE__ ). 'partials/'.$current_views. '.php';
 	}
 
 

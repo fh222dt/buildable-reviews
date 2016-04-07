@@ -11,4 +11,4 @@
  * @package    Plugin_Name
  * @subpackage Plugin_Name/admin/partials
  */
-?><h1>HHHHHHHHHHHHHHHHHHHHHHHHHHH</h1>
+?><h1>Manage reviews</h1>
