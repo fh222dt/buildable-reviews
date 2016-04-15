@@ -4,8 +4,7 @@
  * View listing all reviews
  */
  include_once(ABSPATH . 'wp-content/plugins/buildable-reviews/admin/buildable-reviews-admin-tables.php');
-
- $reviews_obj = new Buildable_reviews_admin_tables();
+ include_once(ABSPATH . 'wp-content/plugins/buildable-reviews/admin/class-reviews-table.php');
 ?>
 <div class="wrap">
     <h2>Mange reviews</h2>
@@ -27,16 +26,26 @@
 
     <?php
     if ($active_tab == 'all-reviews') {
-            //list table
-            $headings = ['ID', 'Företag', 'Samlat betyg', 'Datum', 'Status', 'Användare', 'Detaljer'];
-            $reviews_obj->prepare_items($headings);
+        ?>
+        <form method="post" id="all-reviews">
+            <?php
+            $reviews_obj = new BR_reviews_table();
+            $reviews_obj->prepare_items();
             $reviews_obj->display();
+            ?>
+        </form>
+        <?php
     }
     else if ($active_tab == 'all-employers') {
-            //list table
-            $headings = ['ID', 'Företag', 'Samlat betyg', 'Senest recenserat', 'Antal', 'Visa alla'];
-            $this->reviews_obj->prepare_items($headings);
-            $this->reviews_obj->display();
+        ?>
+        <form method="post">
+            <?php
+            $reviews_obj = new BR_review_objects_table();
+            $reviews_obj->prepare_items();
+            $reviews_obj->display();
+            ?>
+        </form>
+        <?php
     }
     ?>
 

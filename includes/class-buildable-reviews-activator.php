@@ -132,6 +132,7 @@ class Buildable_reviews_Activator {
 		$sql_review_table = 'CREATE TABLE '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW . ' (
 			review_id bigint(20) NOT NULL AUTO_INCREMENT,
 			user_id bigint(20) NOT NULL,
+			posts_id bigint(20) NOT NULL,
 			status_id bigint(20) NOT NULL DEFAULT 1,
 			vote_id bigint(20),
 			question_id bigint(20),

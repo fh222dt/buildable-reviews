@@ -6,13 +6,12 @@ class BR_SQL_Quieries {
      */
      public static function get_reviews($per_page = 25, $page_number = 1) {
          global $wpdb;
-    //$sql_review_status_table = 'CREATE TABLE '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_STATUS . ' (
 
+         $sql = 'SELECT R.review_id, R.created_at, R.updated_at, S.status_name, U.user_email AS user, P.ID AS employer FROM ' .$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW.' R ';
+         $sql .= 'LEFT JOIN '.$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_STATUS. ' S ON R.status_id = S.status_id ';
+         $sql .= 'LEFT JOIN '.$wpdb->prefix . 'users U ON R.user_id = U.ID ';
+         $sql .= 'LEFT JOIN '.$wpdb->prefix . 'posts P ON R.posts_id = P.ID';
 
-
-         $sql = 'SELECT R.review_id, R.created_at, R.updated_at, S.status_name, U.user_email AS user FROM ' .$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW.' R';
-         $sql .= 'LEFT JOIN '.$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_STATUS.' S ON R.status_id = S.status_id';
-         $sql .= 'LEFT JOIN '.$wpdb->prefix . 'users U ON R.user_id = U.ID';
 
          if ( ! empty( $_REQUEST['orderby'] ) ) {
              $sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
