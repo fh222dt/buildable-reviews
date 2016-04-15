@@ -88,6 +88,20 @@ class Buildable_reviews_Activator {
 		)ENGINE=InnoDB AUTO_INCREMENT=1;';
 		$wpdb->query($sql_review_question_option_table);
 
+		//cant set foregin key with dbDelta...
+		$fq1_review_question_option_table = 'ALTER TABLE ' . $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_OPTION_RELATION . '
+			ADD FOREIGN KEY (question_id)
+			REFERENCES ' . $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION . '(question_id)
+    		ON DELETE CASCADE';
+ 		$wpdb->query($fq1_review_question_option_table);
+
+		//cant set foregin key with dbDelta...
+		$fq2_review_question_option_table = 'ALTER TABLE ' . $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_OPTION_RELATION . '
+			ADD FOREIGN KEY (option_id)
+			REFERENCES ' . $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_OPTION . '(option_id)
+    		ON DELETE CASCADE';
+ 		$wpdb->query($fq2_review_question_option_table);
+
 		//Set up REVIEW_QUESTION table
 		$sql_review_question_table = 'CREATE TABLE '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION . ' (
 			question_id bigint(20) NOT NULL AUTO_INCREMENT,
@@ -117,6 +131,7 @@ class Buildable_reviews_Activator {
 		//Set up REVIEW table
 		$sql_review_table = 'CREATE TABLE '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW . ' (
 			review_id bigint(20) NOT NULL AUTO_INCREMENT,
+			user_id bigint(20) NOT NULL,
 			status_id bigint(20) NOT NULL DEFAULT 1,
 			vote_id bigint(20),
 			question_id bigint(20),
