@@ -55,9 +55,10 @@ class BR_reviews_table extends WP_List_Table {
 	function column_default( $item, $column_name ) {
 
 		switch($column_name) {
-            // case 'review_id':
-            //         echo ;
-            //         break;
+            case 'review_id':
+                    $id = $item['review_id'];
+                    echo $id;
+                    break;
 
             case 'employer':
                     $id = $item['employer'];
@@ -65,9 +66,32 @@ class BR_reviews_table extends WP_List_Table {
                     if (current_user_can('edit_post', $id)) {
                         $employer_link = '<a href="'.esc_url(get_edit_post_link($id)).'">'.esc_html(get_the_title($id)) .'</a>';
                     }
-
                     echo $employer_link;
                     break;
+
+            case 'rating':             //TODO
+                    echo "3,9 av 5";
+                    break;
+
+            case 'created_at':
+                    echo $item['created_at'];
+                    break;
+
+            case 'status_name':             //TODO: onclick change status
+                    echo $item['status_name'];
+                    break;
+
+            case 'user':
+                    $user = $item['user'];        //TODO: link to userlisting of ratings
+                    $user_link = '<a href="#">'.$user.'</a>';
+                    echo $user_link;
+                    break;
+
+            case 'details':             //TODO: link to edit-page
+                    $edit_link = '<a href="#">Se hela</a>';
+                    echo $edit_link;
+                    break;
+
             default:
 				return print_r( $item, true ) ;
 
