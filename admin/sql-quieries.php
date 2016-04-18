@@ -54,5 +54,30 @@ class BR_SQL_Quieries {
 
         return $wpdb->get_var($sql);
     }
+
+    /**
+     * Get all employers
+     */
+     public static function get_employers($per_page = 25, $page_number = 1) {
+         global $wpdb;
+
+         $sql = 'SELECT R.posts_id AS employer_id, COUNT(*) AS total_no, MAX(R.created_at) AS most_recent FROM ' .$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW.' R ';
+         $sql .= 'GROUP BY employer_id ';
+
+
+         if ( ! empty( $_REQUEST['orderby'] ) ) {
+             $sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
+             $sql .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
+         }
+
+         $sql .= " LIMIT $per_page";
+
+         $sql .= ' OFFSET ' . ( $page_number - 1 ) * $per_page;
+
+
+         $result = $wpdb->get_results( $sql, 'ARRAY_A' );
+
+         return $result;
+     }
 }
 

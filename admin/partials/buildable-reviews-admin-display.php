@@ -3,7 +3,7 @@
 /**
  * View listing all reviews
  */
- include_once(ABSPATH . 'wp-content/plugins/buildable-reviews/admin/buildable-reviews-admin-tables.php');
+ include_once(ABSPATH . 'wp-content/plugins/buildable-reviews/admin/class-review-objects-table.php');
  include_once(ABSPATH . 'wp-content/plugins/buildable-reviews/admin/class-reviews-table.php');
 ?>
 <div class="wrap">
