@@ -106,6 +106,17 @@ class Buildable_reviews_admin {
 		);
 		$this->views[$view_hook_name] = 'buildable-reviews-admin-review-details';
 
+		//this page is not displayed in the menu using null as slug
+		$view_hook_name = add_submenu_page(
+		null,
+		'List all by',
+		'List all by',
+		'br_edit_reviews',
+		$this->buildable_reviews.'-list',
+		array($this, 'load_admin_page_content')
+		);
+		$this->views[$view_hook_name] = 'buildable-reviews-admin-list';
+
 	}
 
 	//Load the view for menu item

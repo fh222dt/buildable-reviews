@@ -60,11 +60,8 @@ class BR_review_objects_table extends WP_List_Table {
                     break;
 
             case 'employer':
-                    $id = $item['employer_id'];
-                    $employer_link = esc_html(get_the_title($id));
-                    if (current_user_can('edit_post', $id)) {
-                        $employer_link = '<a href="'.esc_url(get_edit_post_link($id)).'">'.esc_html(get_the_title($id)) .'</a>';
-                    }
+					$id = $item['employer_id'];
+					$employer_link = '<a href="?page=buildable-reviews-list&by-employer='.$id.'">'.esc_html(get_the_title($id)) .'</a>';
                     echo $employer_link;
                     break;
 
@@ -80,10 +77,11 @@ class BR_review_objects_table extends WP_List_Table {
                     echo $item['total_no'];
                     break;
 
-            case 'view_all':             //TODO: link to list of all reviews
-                    $edit_link = '<a href="#">Se alla</a>';
-                    echo $edit_link;
-                    break;
+            case 'view_all':
+					$id = $item['employer_id'];
+					$employer_link = '<a href="?page=buildable-reviews-list&by-employer='.$id.'">Se alla</a>';
+					echo $employer_link;
+					break;
 
             default:
 				return print_r( $item, true ) ;

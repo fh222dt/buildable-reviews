@@ -13,7 +13,8 @@ class BR_SQL_Quieries {
          $sql .= 'LEFT JOIN '.$wpdb->prefix . 'posts P ON R.posts_id = P.ID ';
 
          if(! empty($where)) {
-             $sql .= 'WHERE R.review_id = '.$where.' ';
+             //$sql .= 'WHERE R.review_id = '.$where.' ';
+             $sql .= $where;
          }
 
 

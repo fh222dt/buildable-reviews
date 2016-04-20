@@ -10,7 +10,8 @@ if(isset($_GET['review-id'])) {        //TODO: do i need post??
     $review_id = $_GET['review-id'];
 
     //the review we are looking at
-    $result = $sql->get_reviews(25, 1, $review_id);
+    $where = 'WHERE R.review_id = '.$review_id.' ';
+    $result = $sql->get_reviews(25, 1, $where);
     $review =$result[0];
 }
 else {                        //TODO: fånga om det är ett id som inte finns

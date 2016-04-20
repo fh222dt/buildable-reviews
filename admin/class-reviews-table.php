@@ -62,10 +62,7 @@ class BR_reviews_table extends WP_List_Table {
 
             case 'employer':
                     $id = $item['employer'];
-                    $employer_link = esc_html(get_the_title($id));
-                    if (current_user_can('edit_post', $id)) {
-                        $employer_link = '<a href="'.esc_url(get_edit_post_link($id)).'">'.esc_html(get_the_title($id)) .'</a>';
-                    }
+					$employer_link = '<a href="?page=buildable-reviews-list&by-employer='.$id.'">'.esc_html(get_the_title($id)) .'</a>';
                     echo $employer_link;
                     break;
 
@@ -82,8 +79,9 @@ class BR_reviews_table extends WP_List_Table {
                     break;
 
             case 'user':
-                    $user = $item['user'];        //TODO: link to userlisting of ratings
-                    $user_link = '<a href="#">'.$user.'</a>';
+                    $user_email = $item['user'];
+					$user_id = get_user_by( 'email', $user_email );
+                    $user_link = '<a href="?page=buildable-reviews-list&by-user='.$user_id->id.'">'.$user_email.'</a>';
                     echo $user_link;
                     break;
 

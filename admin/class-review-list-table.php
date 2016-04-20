@@ -5,18 +5,22 @@ if( ! class_exists( 'WP_List_Table' ) ) {
 require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/admin/sql-quieries.php' );
 
 /**
- *
+ *	Prepares table for list of all reviews by user or employer
  */
-class BR_reviews_table extends WP_List_Table {
+class BR_reviews_list_table extends WP_List_Table {
     /*
      * Quire the db
      */
      private $sql;
+	/**
+	 * [$where adds WHERE to sql for sorting by user or employer]
+	 */
+	 private $where;
 
     /**
 	 * Constructor
 	 */
-	function __construct() {
+	function __construct($where) {
 
 		parent::__construct( array(
 				'singular'=> __( 'Review', 'textdomain' ),
@@ -24,6 +28,7 @@ class BR_reviews_table extends WP_List_Table {
 				'ajax'	=> false
 		) );
         $this->sql = new BR_SQL_Quieries();
+		$this->where = $where;
 	}
 
     /**
@@ -37,7 +42,6 @@ class BR_reviews_table extends WP_List_Table {
 	    'employer' => __( 'Företag', 'textdomain' ),
 	    'rating'    => __( 'Samlat betyg', 'textdomain' ),
 		'created_at'    => __( 'Datum', 'textdomain' ),
-        'status_name'    => __( 'Status', 'textdomain' ),
         'user'    => __( 'Lämnad av', 'textdomain' ),
         'details'    => __( 'Detaljer', 'textdomain' )
 	  ];
@@ -73,17 +77,14 @@ class BR_reviews_table extends WP_List_Table {
                     echo "3,9 av 5";
                     break;
 
-            case 'created_at':
+			case 'created_at':
                     echo $item['created_at'];
                     break;
 
-            case 'status_name':             //TODO: onclick change status
-                    echo $item['status_name'];
-                    break;
-
-            case 'user':
-                    $user = $item['user'];        //TODO: link to userlisting of ratings
-                    $user_link = '<a href="#">'.$user.'</a>';
+			case 'user':
+                    $user_email = $item['user'];
+					$user_id = get_user_by( 'email', $user );
+                    $user_link = '<a href="?page=buildable-reviews-list&list-by='.$user_id->ID.'">'.$user_email.'</a>';
                     echo $user_link;
                     break;
 
@@ -120,6 +121,6 @@ class BR_reviews_table extends WP_List_Table {
 	  ] );
 
 
-	  $this->items = $this->sql->get_reviews( $per_page, $current_page, null );
+	  $this->items = $this->sql->get_reviews( $per_page, $current_page, $this->where );
 	}
 }
