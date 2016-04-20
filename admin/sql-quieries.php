@@ -10,7 +10,7 @@ class BR_SQL_Quieries {
          $sql = 'SELECT R.review_id, R.created_at, R.updated_at, S.status_name, U.user_email AS user, P.ID AS employer FROM ' .$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW.' R ';
          $sql .= 'LEFT JOIN '.$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_STATUS. ' S ON R.status_id = S.status_id ';
          $sql .= 'LEFT JOIN '.$wpdb->prefix . 'users U ON R.user_id = U.ID ';
-         $sql .= 'LEFT JOIN '.$wpdb->prefix . 'posts P ON R.posts_id = P.ID';
+         $sql .= 'LEFT JOIN '.$wpdb->prefix . 'posts P ON R.posts_id = P.ID ';
 
          if(! empty($where)) {
              $sql .= 'WHERE R.review_id = '.$where.' ';

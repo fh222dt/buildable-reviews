@@ -97,8 +97,7 @@ class Buildable_reviews_admin {
 
 		//this page is not displayed in the menu using null as slug
 		$view_hook_name = add_submenu_page(
-		$this->buildable_reviews,
-
+		null,
 		'Details',
 		'Details',
 		'br_edit_reviews',
