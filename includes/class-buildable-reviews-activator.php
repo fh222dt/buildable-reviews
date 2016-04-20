@@ -102,6 +102,27 @@ class Buildable_reviews_Activator {
     		ON DELETE CASCADE';
  		$wpdb->query($fq2_review_question_option_table);
 
+		//Set up REVIEW_QUESTION_RELATION table
+		$sql_review_question_relation_table = 'CREATE TABLE '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_RELATION . ' (
+			question_id bigint(20) NOT NULL,
+			review_id bigint(20) NOT NULL
+		)ENGINE=InnoDB AUTO_INCREMENT=1;';
+		$wpdb->query($sql_review_question_relation_table);
+
+		//cant set foregin key with dbDelta...
+		$fq1_review_question_relation_table = 'ALTER TABLE ' . $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_RELATION . '
+			ADD FOREIGN KEY (question_id)
+			REFERENCES ' . $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION . '(question_id)
+    		ON DELETE CASCADE';
+ 		$wpdb->query($fq1_review_question_relation_table);
+
+		//cant set foregin key with dbDelta...
+		$fq2_review_question_relation_table = 'ALTER TABLE ' . $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_RELATION . '
+			ADD FOREIGN KEY (review_id)
+			REFERENCES ' . $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW . '(review_id)
+    		ON DELETE CASCADE';
+ 		$wpdb->query($fq2_review_question_relation_table);
+
 		//Set up REVIEW_QUESTION table
 		$sql_review_question_table = 'CREATE TABLE '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION . ' (
 			question_id bigint(20) NOT NULL AUTO_INCREMENT,
@@ -128,6 +149,18 @@ class Buildable_reviews_Activator {
 		)ENGINE=InnoDB AUTO_INCREMENT=1;';
 		dbDelta($sql_review_comment_table);
 
+		//Set up REVIEW_QUESTION_ANSWER table
+		$sql_review_question_answer_table = 'CREATE TABLE '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_ANSWER . ' (
+			answer_id bigint(20) NOT NULL AUTO_INCREMENT,
+			review_id bigint(20) NOT NULL,
+			question_id bigint(20) NOT NULL,
+			answer varchar(500) NOT NULL,
+			PRIMARY KEY  (answer_id)
+		)ENGINE=InnoDB AUTO_INCREMENT=1;';
+		dbDelta($sql_review_question_answer_table);
+
+		//TODO: lägga till främmande nycklar för answers
+
 		//Set up REVIEW table
 		$sql_review_table = 'CREATE TABLE '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW . ' (
 			review_id bigint(20) NOT NULL AUTO_INCREMENT,
@@ -135,7 +168,6 @@ class Buildable_reviews_Activator {
 			posts_id bigint(20) NOT NULL,
 			status_id bigint(20) NOT NULL DEFAULT 1,
 			vote_id bigint(20),
-			question_id bigint(20),
 			created_at datetime NOT NULL,
 			updated_at datetime NOT NULL,
 			PRIMARY KEY  (review_id)
@@ -154,14 +186,6 @@ class Buildable_reviews_Activator {
 			REFERENCES ' . $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_VOTE . '(vote_id)
     		ON DELETE CASCADE';
  		$wpdb->query($fq_review_table_vote);
-
-		$fq_review_table_question = 'ALTER TABLE ' . $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW . '
-			ADD FOREIGN KEY (question_id)
-			REFERENCES ' . $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION . '(question_id)
-    		ON DELETE CASCADE';
- 		$wpdb->query($fq_review_table_question);
-
-
 
 		//user role to be able to edit reviews
 		$editor_role = get_role('editor');

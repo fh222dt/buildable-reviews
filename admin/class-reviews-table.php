@@ -87,8 +87,8 @@ class BR_reviews_table extends WP_List_Table {
                     echo $user_link;
                     break;
 
-            case 'details':             //TODO: link to edit-page
-                    $edit_link = '<a href="#">Se hela</a>';
+            case 'details':
+                    $edit_link = '<a href="?page=buildable-reviews-details&review-id='.$item['review_id'].'">Se hela</a>';
                     echo $edit_link;
                     break;
 

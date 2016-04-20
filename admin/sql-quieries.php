@@ -4,13 +4,17 @@ class BR_SQL_Quieries {
     /**
      * Get all reviews
      */
-     public static function get_reviews($per_page = 25, $page_number = 1) {
+     public static function get_reviews($per_page = 25, $page_number = 1, $where) {
          global $wpdb;
 
          $sql = 'SELECT R.review_id, R.created_at, R.updated_at, S.status_name, U.user_email AS user, P.ID AS employer FROM ' .$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW.' R ';
          $sql .= 'LEFT JOIN '.$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_STATUS. ' S ON R.status_id = S.status_id ';
          $sql .= 'LEFT JOIN '.$wpdb->prefix . 'users U ON R.user_id = U.ID ';
          $sql .= 'LEFT JOIN '.$wpdb->prefix . 'posts P ON R.posts_id = P.ID';
+
+         if(! empty($where)) {
+             $sql .= 'WHERE R.review_id = '.$where.' ';
+         }
 
 
          if ( ! empty( $_REQUEST['orderby'] ) ) {
@@ -43,16 +47,29 @@ class BR_SQL_Quieries {
     }
 
     /**
-    * Returns the count of records in the database.
-    *
-    * @return null|string
-    */
+     * Returns the count of records in the database.
+     *
+     * @return null|string
+     */
     public static function record_count() {
+      global $wpdb;
+
+      $sql = 'SELECT COUNT(*) FROM' .$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW;
+
+      return $wpdb->get_var( $sql );
+    }
+
+    public static function get_review_answers($id) {
         global $wpdb;
 
-        $sql = 'SELECT COUNT(*) FROM ' .$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW;
+        $sql = 'SELECT Q.question_name, A.answer, T.question_type_name FROM ' .$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_ANSWER.' A
+        LEFT JOIN xpn4_br_review_question Q
+        ON A.question_id = Q.question_id
+        LEFT JOIN xpn4_br_review_question_type T
+        ON Q.type_id = T.question_type_id
+        WHERE A.review_id = '.$id.';';
 
-        return $wpdb->get_var($sql);
+        return $wpdb->get_results( $sql, 'OBJECT' );
     }
 
     /**

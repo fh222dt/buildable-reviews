@@ -56,7 +56,7 @@ class Buildable_reviews_admin {
 
 	/**
 	 * Admin menus
-	 * using this solution for parameter free callback: 
+	 * using this solution for parameter free callback:
 	 * http://wordpress.stackexchange.com/questions/16415/passing-arguments-to-a-admin-menu-page-callback
 	 *
 	 */
@@ -70,7 +70,7 @@ class Buildable_reviews_admin {
 		'Reviews',
 		'br_edit_reviews',
 		$this->buildable_reviews,
-		array($this, 'load_admin_page_content'),	//array($this, 'load_admin_page_content(buildable-reviews-admin-display.php)'),   //plugins_url('buildable-reviews\admin\partials\buildable-reviews-admin-display.php'),
+		array($this, 'load_admin_page_content'),
 		'',
 		'3.99');
 		$this->views[$view_hook_name] = 'buildable-reviews-admin-display';
@@ -94,6 +94,18 @@ class Buildable_reviews_admin {
 		array($this, 'load_admin_page_content')
 		);
 		$this->views[$view_hook_name] = 'buildable-reviews-admin-settings';
+
+		//this page is not displayed in the menu using null as slug
+		$view_hook_name = add_submenu_page(
+		$this->buildable_reviews,
+
+		'Details',
+		'Details',
+		'br_edit_reviews',
+		$this->buildable_reviews.'-details',
+		array($this, 'load_admin_page_content')
+		);
+		$this->views[$view_hook_name] = 'buildable-reviews-admin-review-details';
 
 	}
 

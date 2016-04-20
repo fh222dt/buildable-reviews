@@ -41,7 +41,9 @@ class Buildable_reviews {
 	TABLE_NAME_REVIEW_STATUS 						= 'br_review_status',
 	TABLE_NAME_REVIEW_VOTE 							= 'br_review_vote',
 	TABLE_NAME_REVIEW_VOTE_TYPE 					= 'br_review_vote_type',
-	TABLE_NAME_REVIEW_COMMENT 						= 'br_review_comment';
+	TABLE_NAME_REVIEW_COMMENT 						= 'br_review_comment',
+	TABLE_NAME_REVIEW_QUESTION_RELATION 			= 'br_review_question_relation',
+	TABLE_NAME_REVIEW_QUESTION_ANSWER 				= 'br_review_question_answer';
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
