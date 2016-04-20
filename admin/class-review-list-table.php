@@ -99,13 +99,29 @@ class BR_reviews_list_table extends WP_List_Table {
         }
     }
 
+	/**
+	 * Columns to make sortable.
+	 *
+	 * @return array
+	 */
+	public function get_sortable_columns() {
+	  $sortable_columns = array(
+	    'employer' => array( 'employer', true ),
+	    'rating' => array( 'rating', false ),
+		'created_at' => array( 'created_at', false ),
+		'user' => array( 'user', false )
+	  );
+
+	  return $sortable_columns;
+	}
+
     /**
 	 * Handles data query and filter, sorting, and pagination.
 	 */
 	public function prepare_items() {
       $columns = $this->get_columns();
       $hidden = [];
-      $sortable = [];
+      $sortable = $this->get_sortable_columns();
 	  $this->_column_headers = array($columns, $hidden, $sortable);
 
 	  /** Process bulk action */
