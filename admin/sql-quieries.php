@@ -63,14 +63,14 @@ class BR_SQL_Quieries {
     public static function get_review_answers($id) {
         global $wpdb;
 
-        $sql = 'SELECT Q.question_name, A.answer, T.question_type_name FROM ' .$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_ANSWER.' A
+        $sql = 'SELECT A.answer_id, Q.question_name, A.answer, T.question_type_name FROM ' .$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_ANSWER.' A
         LEFT JOIN xpn4_br_review_question Q
         ON A.question_id = Q.question_id
         LEFT JOIN xpn4_br_review_question_type T
         ON Q.type_id = T.question_type_id
         WHERE A.review_id = '.$id.';';
 
-        return $wpdb->get_results( $sql, 'OBJECT' );
+        return $wpdb->get_results($sql, 'ARRAY_A');
     }
 
     /**
