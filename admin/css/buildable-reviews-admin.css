@@ -2,3 +2,21 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+
+.br-admin {
+    display: inline-block;
+}
+
+.br-description {
+    margin-right: 950px;
+    float:right;;
+    font-style: italic;
+    /*display: inline-block;*/
+}
+
+.br-textfield {
+    width: 100px;
+    float:right;
+    margin-right: 600px;
+    /*display: inline-block;*/
+}

@@ -59,7 +59,9 @@ class BR_SQL_Quieries {
 
       return $wpdb->get_var( $sql );
     }
-
+    /**
+     * Returns all questions with its answers by review_id
+     */
     public static function get_review_answers($id) {
         global $wpdb;
 
@@ -94,6 +96,29 @@ class BR_SQL_Quieries {
 
 
          $result = $wpdb->get_results( $sql, 'ARRAY_A' );
+
+         return $result;
+     }
+
+     public static function get_all_status_names() {
+         global $wpdb;
+
+         $sql = 'SELECT status_name FROM '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_STATUS;
+
+        $result = $wpdb->get_results( $sql, 'ARRAY_A' );
+
+         return $result;
+
+     }
+
+     public static function get_all_questions() {
+         global $wpdb;
+
+         $sql = 'SELECT Q.question_id, Q.question_name, Q.question_desc, T.question_type_name FROM ' .$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION. ' Q
+         LEFT JOIN xpn4_br_review_question_type T
+         ON Q.type_id = T.question_type_id';
+
+        $result = $wpdb->get_results( $sql, 'ARRAY_A' );
 
          return $result;
      }

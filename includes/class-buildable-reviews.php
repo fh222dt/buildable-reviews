@@ -164,13 +164,16 @@ class Buildable_reviews {
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
+		 include_once(ABSPATH . 'wp-content/plugins/buildable-reviews/admin/class-settings.php');
 
 		$plugin_admin = new Buildable_reviews_admin( $this->get_buildable_reviews(), $this->get_version() );
+		$settings_admin = new BR_Settings();
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_admin_menus' );
+		$this->loader->add_action('admin_init', $settings_admin, 'br_init_settings');
 
 	}
 

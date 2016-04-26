@@ -85,15 +85,27 @@ class Buildable_reviews_admin {
 		);
 		$this->views[$view_hook_name] = 'buildable-reviews-admin-add-question';
 
-		$view_hook_name = add_submenu_page(
-		$this->buildable_reviews,
-		'Settings',
-		'Settings',
-		'br_edit_reviews',
-		$this->buildable_reviews.'-settings',
-		array($this, 'load_admin_page_content')
-		);
-		$this->views[$view_hook_name] = 'buildable-reviews-admin-settings';
+		//TODO: clean up this mess!
+		// $view_hook_name = add_submenu_page(
+		// $this->buildable_reviews,
+		// 'Settings',
+		// 'Settings',
+		// 'br_edit_reviews',
+		// $this->buildable_reviews.'-settings',
+		// array($this, 'load_admin_page_content')
+		// );
+		// $this->views[$view_hook_name] = 'buildable-reviews-settings';
+
+		 add_submenu_page(
+		 'buildable-reviews',
+		 'Settings',
+		 'Settings',
+		 'br_edit_reviews',
+		 'buildable-reviews-settings',
+		 array($this,'br_settings_page_callback')
+	 	);
+
+
 
 		//this page is not displayed in the menu using null as slug
 		$view_hook_name = add_submenu_page(
@@ -117,6 +129,10 @@ class Buildable_reviews_admin {
 		);
 		$this->views[$view_hook_name] = 'buildable-reviews-admin-list';
 
+	}
+
+	function br_settings_page_callback() {
+		require_once plugin_dir_path( __FILE__ ). 'partials/buildable-reviews-settings.php';
 	}
 
 	//Load the view for menu item
@@ -145,7 +161,7 @@ class Buildable_reviews_admin {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->buildable_reviews, plugin_dir_url( __FILE__ ) . 'css/plugin-name-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->buildable_reviews, plugin_dir_url( __FILE__ ) . 'css/buildable-reviews-admin.css', array(), $this->version, 'all' );
 
 	}
 
@@ -168,7 +184,7 @@ class Buildable_reviews_admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->buildable_reviews, plugin_dir_url( __FILE__ ) . 'js/plugin-name-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->buildable_reviews, plugin_dir_url( __FILE__ ) . 'js/buildable-reviews-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
 

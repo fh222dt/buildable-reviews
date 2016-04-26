@@ -26,7 +26,7 @@
 						<td>
 							<select name="type" id="type">
                                 <?php
-                                    $types = ['Select','Checkbox', 'Textfield', 'Scale 1-5', 'Radio']; //get all types from db can also be a förmån
+                                    $types = ['Select','Checkbox', 'Textfield', 'Scale 1-5', 'Radio']; //TODO: get all types from db can also be a förmån
                                     foreach($types as $type) {
                                         echo '<option value="'.$type.'">'.$type.'</option>';
                                     }
