@@ -42,11 +42,11 @@ class BR_Settings
             array($this, 'br_sanitize_standard_status')
         );
 
-        // register_setting(
-        //     'br_settings',
-        //     'br_question_algorithm',
-        //     array($this, 'br_sanitize_question_algorithm')
-        // );
+        register_setting(
+            'br_settings',
+            'br_question_algorithm',
+            array($this, 'br_sanitize_question_algorithm')
+        );
     }
 
     public function br_standard_status_callback() {
@@ -56,9 +56,6 @@ class BR_Settings
         $option = get_option('br_standard_status');
         ?>
         <select name="br_standard_status" id="br_standard_status">
-            <!-- <option name="br_standard_status[g]" value="godkänd">Godkänd</option>
-            <option name="br_standard_status[e]" value="ej_granskad">Ej granskad</option>
-            <option name="br_standard_status[a]" value="anmäld">Anmäld</option> -->
         <?php
         //gör dropdown med vald status markerad
         foreach ($status_names as $name) {
@@ -77,36 +74,48 @@ class BR_Settings
         echo '<p>Här ställer du in vilken procent en fråga ska väga in i totalbetyget av en recension. Du kan ange mellan 0-100.
         Den totala summan av procentsatserna måste bli 100%</p><br>';
         $questions = $this->sql->get_all_questions();
+        //tidigare sparade option
+        $option = get_option('br_question_algorithm');
+
+        //echo '<input type="text" name="br_question_algorithm[1]" class="br-textfield" value="'. $option[1].'" />';
 
         foreach ($questions as $q) {
             echo
             '<p class="br-admin">'
                 . $q['question_name'] .
                     '<span class="br-description">'. $q['question_type_name'] . '</span>
-                    <input type="text" name="br_q_id_'. $q['question_id'] .'" id="'. $q['question_id'] .'" class="br-textfield" value="'. $this->saved_settings['br_question_algorithm'][$q]['value'] .'" />
-            </p>';            //TODO: ad value to input & style
+                    <input type="text" name="br_question_algorithm['. $q['question_id'] .']" class="br-textfield" value="'. $option[$q['question_id']].'" />
+                    %
+            </p>';
 
         }
     }
-
+    /**
+     * Only sanitazing, saves to db either way WTF!!!
+     * If not returning, saving is performed anyway
+     */
     public function br_sanitize_standard_status($input) {
-
+        //TODO kolla av att det är nåt av värdena i db?
         return $input;
     }
 
     public function br_sanitize_question_algorithm($input) {
-        //  var_dump($input['br_question_algorithm']['value']);
-        //  exit;
-        //validera input som siffror, summa 100
-        //name => value
-        if(! is_numeric($input['br_question_algorithm']['value'])) {
-            add_settings_error('br_question_algorithm', 'br_question_algorithm_error_num', 'Du kan bara ange siffor');
-        }
+        //tidigare sparade option
+        $option = get_option('br_question_algorithm');
 
-        if(array_sum($input['br_question_algorithm']['value']) != 100) {
-            add_settings_error('br_question_algorithm', 'br_question_algorithm_error_sum', 'Summan av alla frågor måste vara 100%');
+        foreach($input as $element) {
+            if(! is_numeric($element)) {
+                add_settings_error('br_question_algorithm', 'br_question_algorithm_error_num', 'Du kan bara ange siffror');
+                return $option;
+            }
         }
-        return $input;
+        if(array_sum($input) != 100) {
+            add_settings_error('br_question_algorithm', 'br_question_algorithm_error_sum', 'Summan av alla frågor måste vara 100 %');
+            return $option;
+        }
+        else {
+            return $input;
+        }
     }
 
     public function br_general_settings_callback() {
