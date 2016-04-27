@@ -18,7 +18,7 @@ include_once(ABSPATH . 'wp-content/plugins/buildable-reviews/admin/class-setting
     <form method="post" name="buildable reviews settings" action="options.php">
 			<?php
 			//wp_nonce_field('update-options');
-			settings_fields('general_settings_section');                //settingsfields-section to show
+			settings_fields('br_settings');                //settingsfields-section to show
 			do_settings_sections('buildable-reviews-settings');        //slug of page to show settings
 			submit_button(null, 'primary', 'submit', true, null);
 			?>
