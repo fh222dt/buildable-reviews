@@ -1,28 +1,20 @@
 <?php
 
 /**
- * View all details of review
+ * View all details of review, edit answers from user
  */
 
 require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/admin/sql-quieries.php' );
 $sql = new BR_SQL_Quieries();
 
-if(isset($_GET['review-id'])) {        //TODO: do i need post??
+if(isset($_GET['review-id'])) {
     $review_id = $_GET['review-id'];
     //the review we are looking at
     $where = 'WHERE R.review_id = '.$review_id.' ';
     $result = $sql->get_reviews(25, 1, $where);
     $review =$result[0];
-
 }
-// else if(isset($_POST['review-id'])) {
-//     $review_id = $_POST['review-id'];
-//
-//     //the review we are looking at
-//     $where = 'WHERE R.review_id = '.$review_id.' ';
-//     $result = $sql->get_reviews(25, 1, $where);
-//     $review =$result[0];
-// }
+
 else {                        //TODO: fånga om det är ett id som inte finns
     echo '<p>Invalid review id</p>';
     die;
@@ -80,46 +72,8 @@ else {                        //TODO: fånga om det är ett id som inte finns
         <input type="hidden" name="review-id" value="<?php echo $review_id ?>" />
         <?php
 		submit_button( __( 'Uppdatera', 'textdomain' ), 'primary');
-        //submit_button( __( 'Ta bort hela recensionen', 'textdomain' ), 'delete' );
+        //submit_button( __( 'Ta bort hela recensionen', 'textdomain' ), 'delete' );    //TODO: delete review
 		?>
      </form>
 
-
 </div>
-
-<?php
-// function br_update_review() {
-//     global $wpdb;
-//     $sql = new BR_SQL_Quieries();
-//
-//     if(isset($_GET['review-id'])) {        //TODO: do i need post??
-//         $review_id = $_GET['review-id'];
-//     }
-//     else if(isset($_POST['review-id'])) {
-//         $review_id = $_POST['review-id'];
-//     }
-//     //echo $review_id;
-//     $answers = $sql->get_review_answers($review_id);
-//     print_r($answers);
-//     foreach ($answers as $answer) {
-//         if($answer['question_type_name'] == 'Textfield'){
-//             $answer['answer'] = ($_POST['answer-id-'. $answer['answer_id']]);
-//
-//             $wpdb->update($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_ANSWER, array('answer' => $answer['answer']),
-//             array('answer_id' => $answer['answer_id']));         //TODO: kankse ange datatyper?
-//         }
-//     }
-//     //wp_redirect( 'admin.php?page=buildable-reviews-details&review-id=997' );
-//     //TODO: update status
-// }
-//
-//
-// if ( isset( $_POST['br_update_review'] ) && $_POST['br_update_review'] == 'true' ) {
-//     //echo $_POST['answer-id-'. $answer['answer_id']];
-//     //add_action('admin_init', 'br_update_review');
-//     // require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/admin/class-update-review.php' );
-//     // $update = new BR_update_review();
-//     // $update->br_update_review();
-//     br_update_review();
-//     //wp_redirect('admin.php?page=buildable-reviews-details&review-id=996');
-// }

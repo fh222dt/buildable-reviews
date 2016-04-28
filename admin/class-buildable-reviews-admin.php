@@ -85,27 +85,15 @@ class Buildable_reviews_admin {
 		);
 		$this->views[$view_hook_name] = 'buildable-reviews-admin-add-question';
 
-		//TODO: clean up this mess!
-		// $view_hook_name = add_submenu_page(
-		// $this->buildable_reviews,
-		// 'Settings',
-		// 'Settings',
-		// 'br_edit_reviews',
-		// $this->buildable_reviews.'-settings',
-		// array($this, 'load_admin_page_content')
-		// );
-		// $this->views[$view_hook_name] = 'buildable-reviews-settings';
-
-		 add_submenu_page(
-		 'buildable-reviews',
-		 'Settings',
-		 'Settings',
-		 'br_edit_reviews',
-		 'buildable-reviews-settings',
-		 array($this,'br_settings_page_callback')
-	 	);
-
-
+		$view_hook_name = add_submenu_page(
+		$this->buildable_reviews,
+		'Settings',
+		'Settings',
+		'br_edit_reviews',
+		$this->buildable_reviews.'-settings',
+		array($this, 'load_admin_page_content')
+		);
+		$this->views[$view_hook_name] = 'buildable-reviews-settings';
 
 		//this page is not displayed in the menu using null as slug
 		$view_hook_name = add_submenu_page(
@@ -140,6 +128,7 @@ class Buildable_reviews_admin {
 		$current_views = $this->views[current_filter()];
     	require_once plugin_dir_path( __FILE__ ). 'partials/'.$current_views. '.php';
 	}
+
 	/**
 	 * Updates or edits review from user & redirects back to update view
 	 */
@@ -151,13 +140,12 @@ class Buildable_reviews_admin {
             $review_id = $_POST['review-id'];
         }
 
-
-
         $answers = $sql->get_review_answers($review_id);
 
-        foreach ($answers as $answer) {		//TODO: sanitize & validate input
+		//update textfield-answers of questions in db
+        foreach ($answers as $answer) {
             if($answer['question_type_name'] == 'Textfield'){
-                $answer['answer'] = ($_POST['answer-id-'. $answer['answer_id']]);
+                $answer['answer'] = sanitize_text_field($_POST['answer-id-'. $answer['answer_id']]);
 
                 $wpdb->update($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_ANSWER, array('answer' => $answer['answer']),
                 array('answer_id' => $answer['answer_id']));         //TODO: kankse ange datatyper?
