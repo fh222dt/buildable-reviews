@@ -172,8 +172,9 @@ class Buildable_reviews {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
-		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_admin_menus' );
-		$this->loader->add_action('admin_init', $settings_admin, 'br_init_settings');
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_admin_menus' );	//plugin admin menu
+		$this->loader->add_action('admin_init', $settings_admin, 'br_init_settings');	//plugin settings page
+		$this->loader->add_action('admin_post_br_update_review', $plugin_admin, 'br_update_review'); //edit/update review from user
 
 	}
 

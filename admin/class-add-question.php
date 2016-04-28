@@ -1,10 +1,10 @@
 <?php
 /**
- *	Update review
+ *	Add new question to the review
  */
  require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/admin/sql-quieries.php' );
 
-class BR_update_review {
+class BR_add_question {
 
 
     function br_update_review() {

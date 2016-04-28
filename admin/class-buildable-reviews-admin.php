@@ -140,6 +140,38 @@ class Buildable_reviews_admin {
 		$current_views = $this->views[current_filter()];
     	require_once plugin_dir_path( __FILE__ ). 'partials/'.$current_views. '.php';
 	}
+	/**
+	 * Updates or edits review from user & redirects back to update view
+	 */
+	public function br_update_review() {
+        global $wpdb;
+        $sql = new BR_SQL_Quieries();
+
+        if(isset($_POST['review-id'])) {
+            $review_id = $_POST['review-id'];
+        }
+
+
+
+        $answers = $sql->get_review_answers($review_id);
+
+        foreach ($answers as $answer) {		//TODO: sanitize & validate input
+            if($answer['question_type_name'] == 'Textfield'){
+                $answer['answer'] = ($_POST['answer-id-'. $answer['answer_id']]);
+
+                $wpdb->update($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_ANSWER, array('answer' => $answer['answer']),
+                array('answer_id' => $answer['answer_id']));         //TODO: kankse ange datatyper?
+            }
+        }
+		//update status in db
+		if(isset($_POST['status'])) {
+			$status = (int)$_POST['status'];
+			$wpdb->update($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW, array('status_id' => $status),
+				array('review_id' => $review_id));
+		}
+
+        wp_redirect('admin.php?page=buildable-reviews-details&review-id='.$review_id);
+    }
 
 
 	/**
