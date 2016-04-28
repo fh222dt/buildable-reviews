@@ -3,10 +3,13 @@
 /**
  * View for adding new question to review
  */
+ require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/admin/sql-quieries.php' );
+ $sql = new BR_SQL_Quieries();
+
  ?><div class="wrap">
 		<h2>Add question</h2>
 
-		<form method="post">
+		<form method="post" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>">
 			<table class="form-table">
 				<tbody>
                     <tr valign="top">
@@ -26,9 +29,9 @@
 						<td>
 							<select name="type" id="type">
                                 <?php
-                                    $types = ['Select','Checkbox', 'Textfield', 'Scale 1-5', 'Radio']; //TODO: get all types from db can also be a förmån
+                                    $types = $sql->get_all_question_types();
                                     foreach($types as $type) {
-                                        echo '<option value="'.$type.'">'.$type.'</option>';
+                                        echo '<option value="'.$type['question_type_id'].'">'.$type['question_type_name'].'</option>';
                                     }
                                  ?>
 							</select>
@@ -38,11 +41,11 @@
 				<tr valign="top">
 						<th scope="row"><?php _e( 'Answer options', 'textdomain' ); ?></th>
 						<td>
-                            <select name="options" multiple='multiple'>
+                            <select name="options[]" multiple='multiple'>
                                 <?php
-                                    $options = ['1','ganska bra', 'förmån']; //get all options from db can also be a förmån
+                                    $options = $sql->get_all_answer_options();
                                     foreach($options as $option) {
-                                        echo '<option value="'.$option.'">'.$option.'</option>';
+                                        echo '<option value="'.$option['option_id'].'">'.$option['option_name'].'</option>';
                                     }
                                  ?>
 							</select>
@@ -52,6 +55,7 @@
 				</tr>
 				</tbody>
 			</table>
+            <input type="hidden" name="action" value="br_add_new_question" />
 			<input class="button button-primary" value="<?php _e( 'Add new question', 'textdomain' ); ?>" type="submit" />
 		</form>
 	</div>

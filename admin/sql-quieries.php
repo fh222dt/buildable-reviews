@@ -122,5 +122,26 @@ class BR_SQL_Quieries {
 
          return $result;
      }
+
+     public static function get_all_question_types() {
+         global $wpdb;
+
+         $sql = 'SELECT * FROM '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_TYPE;
+
+        $result = $wpdb->get_results( $sql, 'ARRAY_A' );
+
+         return $result;
+     }
+
+     public static function get_all_answer_options() {
+         global $wpdb;
+
+         $sql = 'SELECT * FROM '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_OPTION;
+
+        $result = $wpdb->get_results( $sql, 'ARRAY_A' );
+
+         return $result;
+
+     }
 }
 
