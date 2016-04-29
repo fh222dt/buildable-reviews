@@ -54,6 +54,12 @@ class Buildable_reviews_Public {
 
 	}
 
+	public function register_shortcodes() {
+		require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/public/class-public-form.php' );
+		add_shortcode('br-review-form', array('BR_public_review_form', 'br_review_form'));
+	}
+
+
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
@@ -73,7 +79,7 @@ class Buildable_reviews_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->buildable_reviews, plugin_dir_url( __FILE__ ) . 'css/plugin-name-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->buildable_reviews, plugin_dir_url( __FILE__ ) . 'css/buildable-reviews-public.css', array(), $this->version, 'all' );
 
 	}
 
@@ -96,7 +102,7 @@ class Buildable_reviews_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->buildable_reviews, plugin_dir_url( __FILE__ ) . 'js/plugin-name-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->buildable_reviews, plugin_dir_url( __FILE__ ) . 'js/buildable-reviews.js', array( 'jquery' ), $this->version, false );
 
 	}
 
