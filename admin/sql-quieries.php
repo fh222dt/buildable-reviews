@@ -143,5 +143,18 @@ class BR_SQL_Quieries {
          return $result;
 
      }
+
+     public static function get_all_answer_option_relations() {
+         global $wpdb;
+
+         $sql = 'SELECT R.question_id, O.option_name AS name FROM '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_OPTION_RELATION .' R
+         LEFT JOIN '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_OPTION .' O
+         ON R.option_id = O.option_id';
+
+        $result = $wpdb->get_results( $sql, 'ARRAY_A' );
+
+         return $result;
+
+     }
 }
 
