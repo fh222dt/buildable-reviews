@@ -20,7 +20,7 @@ class BR_question_templates {
         }
         else if($type == 'Textfield') {
 
-            $output .= $this->render_textfield($options);
+            $output .= $this->render_textfield($question);
         }
 
         else if($type == 'Scale' || $type == 'Radio') {
@@ -46,9 +46,9 @@ class BR_question_templates {
         return $output;
     }
 
-    public function render_textfield($options) {
+    public function render_textfield($question) {
 
-        $output = '<textarea name="'. $option .'"></textarea>';
+        $output = '<textarea name="'. $question['question_name'] .'"></textarea>';
 
         return $output;
     }

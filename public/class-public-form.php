@@ -20,8 +20,13 @@ class BR_public_review_form {
 
             foreach ($question_options as &$option) {
 
-                if($q['question_id'] == $option['question_id']) {
+                //ugly way of findning benefits question
+                if($q['question_name'] == 'Förmåner') {
+                    $benefits = BR_public_review_form::do_benefits();
+                    $q['options'] = $benefits;
+                }
 
+                else if($q['question_id'] == $option['question_id']) {
                     $name = $option['name'];
                     array_push($array, $name);
                 }
@@ -29,15 +34,7 @@ class BR_public_review_form {
             $options = ['options' => $array];
             $q = $q + $options;
             $array = [];
-
         }
-
-        // $benefits = get_terms(array(
-        //     'taxonomy' => 'benefit',
-        //     'orderby' => '',
-        //     'hide_empty' => 'false',
-        //     'meta_value' => '',
-        // ));
 
         $form = '<h2>Lämna din recension</h2>';
 
@@ -50,5 +47,20 @@ class BR_public_review_form {
 
         return $form;
 
+    }
+    //add all benefits as options to the question
+    private function do_benefits() {
+        $raw_benefits = get_terms(array(
+            'taxonomy' => 'benefit',
+            'orderby' => 'meta_value',
+            'hide_empty' => false,
+            //'meta_value' => 'Försäkringar & Hälsa',        //search by category name
+        ));
+        $benefits = [];
+        foreach ($raw_benefits as &$benefit) {
+            $name = $benefit->name;
+            array_push($benefits, $name);
+        }
+        return $benefits;
     }
 }
