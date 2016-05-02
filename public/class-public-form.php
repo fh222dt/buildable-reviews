@@ -12,11 +12,25 @@ class BR_public_review_form {
         $question_templates = new BR_question_templates();
         $sql = new BR_SQL_Quieries();
 
-        $usable_questions = $sql->get_all_questions();
-        $question_options = $sql->get_all_answer_option_relations();
+        $usable_questions = $sql->get_all_questions();                      //question_id, question_name, question_desc, question_type_name
+        $question_options = $sql->get_all_answer_option_relations();        //question_id, name
 
-        print_r($question_options);
-        exit;
+        $array = [];
+        foreach ($usable_questions as &$q) {
+
+            foreach ($question_options as &$option) {
+
+                if($q['question_id'] == $option['question_id']) {
+
+                    $name = $option['name'];
+                    array_push($array, $name);
+                }
+            }
+            $options = ['options' => $array];
+            $q = $q + $options;
+            $array = [];
+
+        }
 
         // $benefits = get_terms(array(
         //     'taxonomy' => 'benefit',
@@ -27,12 +41,12 @@ class BR_public_review_form {
 
         $form = '<h2>Lämna din recension</h2>';
 
-        $questions;
-        foreach ($usable_questions as $q) {
-            $questions.= $this->question_templates->render_question($q);
+        $output;
+        foreach ($usable_questions as $question) {
+            $output.= $question_templates->render_question($question);
         }
 
-        $form .= $questions;
+        $form .= $output;
 
         return $form;
 

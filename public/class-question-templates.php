@@ -1,7 +1,7 @@
 <?php
 class BR_question_templates {
     public function render_question($question){
-                                                        //TODO: lägg till classer
+                                                        //TODO: lägg till css-classer
         $output = '<div class="br-question>"
                     <h3>'. $question['question_name'] .'</h3>
                     <p>'. $question['question_desc'] .'</p>';
@@ -11,18 +11,21 @@ class BR_question_templates {
         $options = $question['options'];
         $type = $question['question_type_name'];
 
-        if($type = 'checkbox') {
+        // print_r($type);
+        // exit;
 
-            $output .= render_checkbox($options);
+        if($type == 'Checkbox') {
+
+            $output .= $this->render_checkbox($options);
         }
-        else if($type = 'textfield') {
+        else if($type == 'Textfield') {
 
-            $output .= render_textfield($options);
+            $output .= $this->render_textfield($options);
         }
 
-        else if($type = 'scale' || $type = 'radio') {            //TODO: kanske fel namn??
+        else if($type == 'Scale' || $type == 'Radio') {
 
-            $output .= render_radio($options, $question);
+            $output .= $this->render_radio($options, $question);
         }
 
         $output .=         '</div>';
@@ -33,10 +36,10 @@ class BR_question_templates {
     }
 
     public function render_checkbox($options) {
-
-        foreach ($options as $option) {        //TODO: name???
-            $output .= '<input type="checkbox" name="'. $option['name'] .'" value="'. $option['name'] .'"></input>
-                        <label>'. $option['name'] .'</label>';
+        $output;
+        foreach ($options as $option) {
+            $output .= '<input type="checkbox" name="'. $option .'" value="'. $option .'"></input>
+                        <label>'. $option .'</label>';
         }
         //TODO: gruppera ??
 
@@ -45,17 +48,16 @@ class BR_question_templates {
 
     public function render_textfield($options) {
 
-        //foreach ($options as $option) {        //TODO: name???
-            $output .= '<textarea name="'. $option['name'] .'"></textarea>';
-        //}
+        $output = '<textarea name="'. $option .'"></textarea>';
+
         return $output;
     }
 
     public function render_radio($options, $question) {    //kanske ett 3e arg för hur det ska stylas??
-
-        foreach ($options as $option) {        //TODO: name???
-            $output .= '<input type="radio" name="'. $question['name'] .'" value="'. $option['name'] .'"></input>
-                        <label>'. $option['name'] .'</label>';
+        $output;
+        foreach ($options as $option) {
+            $output .= '<input type="radio" name="'. $question['question_name'] .'" value="'. $option .'"></input>
+                        <label>'. $option .'</label>';
         }
         return $output;
     }
