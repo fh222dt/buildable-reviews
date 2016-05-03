@@ -53,8 +53,9 @@ class BR_public_review_form {
 
         $form .= $output;
         $form .= '<input type="hidden" name="action" value="br_submit_review" />
-        <input value="Lämna recension" type="submit" />
-        </form>';
+                <input type="hidden" name="post_id" value="'. get_the_ID().'" />
+                <input value="Lämna recension" type="submit" />
+                </form>';
 
         return $form;
 

@@ -59,8 +59,8 @@ class BR_Settings
         <?php
         //gör dropdown med vald status markerad
         foreach ($status_names as $name) {
-            echo '<option name="br_standard_status['. $name['status_name'] .']" value="'.$name['status_name'] .'"';
-            selected($option, $name['status_name']);
+            echo '<option name="br_standard_status['. $name['status_name'] .']" value="'.$name['status_id'] .'"';
+            selected($option, $name['status_id']);
             echo '>'. $name['status_name'] .'</option>';
         }
         ?>

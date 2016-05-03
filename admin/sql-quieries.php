@@ -103,7 +103,7 @@ class BR_SQL_Quieries {
      public static function get_all_status_names() {
          global $wpdb;
 
-         $sql = 'SELECT status_name FROM '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_STATUS;
+         $sql = 'SELECT * FROM '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_STATUS;
 
         $result = $wpdb->get_results( $sql, 'ARRAY_A' );
 

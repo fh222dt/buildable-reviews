@@ -60,10 +60,12 @@ class Buildable_reviews_Public {
 	}
 
 	public function handle_submited_review() {
+		global $wpdb;
 
 		if (isset($_POST['action']) && $_POST['action'] == 'br_submit_review') {
 			$max_lenght = 250;		//TODO: what is maxlenght??
-			foreach ($_POST as $q_name => &$answer) {
+			$answers = [];
+			foreach ($_POST as $question_id => &$answer) {
 				//validera
 				if(empty($answer)) {		//all frågor kommer ej va obligatoriska
 					//skicka ut felmeddelanden
@@ -71,15 +73,37 @@ class Buildable_reviews_Public {
 				if(strlen($answer) > $max_lenght) {
 					//skicka ut felmeddelanden
 				}
-				//sanera
-				$answer = sanitize_text_field($answer);
-				//mera??
+				//remove all non question answers from POST by only store POST-keys with question_id:s
+				//Sanitize input from user & store in new array
+				if(is_numeric($question_id)) {
+					$answers[$question_id] = sanitize_text_field($answer);
+				}
+
+
 			}
 
+			//saves review to review db table
+			$current_user = wp_get_current_user();
+			$user_id = $current_user->ID;
+			$post_id = $_POST['post_id'];
+			$status_id = get_option('br_standard_status'); //returns status_id from plugin settings
+			$now = date("Y-m-d H:i:s");
+			
+			$wpdb->insert($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW,
+				array('user_id' => $user_id, 'posts_id' => $post_id, 'status_id' => $status_id, 'created_at' => $now),
+				array('%d', '%d', '%d', '%s'));
 
+			//saves all answers to answers db table
+			$review_id = (int)$wpdb->insert_id;
 
-			//spara
-			//ge inlämningsbesked
+			foreach ($answers as $q => $a) {
+				$wpdb->insert($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_ANSWER,
+					array('review_id' => $review_id, 'question_id' => $q, 'answer' => $a),
+					array('%d', '%d', '%s'));
+			}
+
+			//TODO:ge inlämningsbesked
+			wp_redirect(home_url());
 		}
 	}
 
