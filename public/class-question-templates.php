@@ -16,7 +16,7 @@ class BR_question_templates {
 
         if($type == 'Checkbox') {
 
-            $output .= $this->render_checkbox($options);
+            $output .= $this->render_checkbox($options, $question);
         }
         else if($type == 'Textfield') {
 
@@ -35,10 +35,10 @@ class BR_question_templates {
         return $output;
     }
 
-    public function render_checkbox($options) {
+    public function render_checkbox($options, $question) {
         $output;
         foreach ($options as $option) {
-            $output .= '<input type="checkbox" name="'. $option .'" value="'. $option .'"></input>
+            $output .= '<input type="checkbox" name="'. $question['question_id'] .'" value="'. $option .'"></input>
                         <label>'. $option .'</label>';
         }
         //TODO: gruppera ??
@@ -48,7 +48,7 @@ class BR_question_templates {
 
     public function render_textfield($question) {
 
-        $output = '<textarea name="'. $question['question_name'] .'"></textarea>';
+        $output = '<textarea name="'. $question['question_id'] .'"></textarea>';
 
         return $output;
     }
@@ -56,7 +56,7 @@ class BR_question_templates {
     public function render_radio($options, $question) {    //kanske ett 3e arg för hur det ska stylas??
         $output;
         foreach ($options as $option) {
-            $output .= '<input type="radio" name="'. $question['question_name'] .'" value="'. $option .'"></input>
+            $output .= '<input type="radio" name="'. $question['question_id'] .'" value="'. $option .'"></input>
                         <label>'. $option .'</label>';
         }
         return $output;

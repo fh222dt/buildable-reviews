@@ -9,6 +9,13 @@ require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/admin/sql-quieries
 class BR_public_review_form {
 
     public function br_review_form() {
+
+        if(!is_user_logged_in()){
+
+            return '<p>Du måste vara inloggad för att kunna lämna en recension</p>';    //TODO: omformulera o styla
+        }
+
+
         $question_templates = new BR_question_templates();
         $sql = new BR_SQL_Quieries();
 
@@ -36,7 +43,8 @@ class BR_public_review_form {
             $array = [];
         }
 
-        $form = '<h2>Lämna din recension</h2>';
+        $form = '<h2>Lämna din recension</h2>
+                <form method="post" action="">';
 
         $output;
         foreach ($usable_questions as $question) {
@@ -44,6 +52,9 @@ class BR_public_review_form {
         }
 
         $form .= $output;
+        $form .= '<input type="hidden" name="action" value="br_submit_review" />
+        <input value="Lämna recension" type="submit" />
+        </form>';
 
         return $form;
 

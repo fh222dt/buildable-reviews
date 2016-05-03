@@ -194,6 +194,7 @@ class Buildable_reviews {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		$this->loader->add_action( 'init', $plugin_public, 'register_shortcodes' );		//all public shortcodes
+		$this->loader->add_action('init', $plugin_public, 'handle_submited_review'); //take care of submitted review from user
 
 	}
 

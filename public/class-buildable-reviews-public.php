@@ -59,6 +59,30 @@ class Buildable_reviews_Public {
 		add_shortcode('br-review-form', array('BR_public_review_form', 'br_review_form'));
 	}
 
+	public function handle_submited_review() {
+
+		if (isset($_POST['action']) && $_POST['action'] == 'br_submit_review') {
+			$max_lenght = 250;		//TODO: what is maxlenght??
+			foreach ($_POST as $q_name => &$answer) {
+				//validera
+				if(empty($answer)) {		//all frågor kommer ej va obligatoriska
+					//skicka ut felmeddelanden
+				}
+				if(strlen($answer) > $max_lenght) {
+					//skicka ut felmeddelanden
+				}
+				//sanera
+				$answer = sanitize_text_field($answer);
+				//mera??
+			}
+
+
+
+			//spara
+			//ge inlämningsbesked
+		}
+	}
+
 
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
