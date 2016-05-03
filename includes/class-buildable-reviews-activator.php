@@ -129,6 +129,7 @@ class Buildable_reviews_Activator {
 			type_id bigint(20) NOT NULL,
 			question_name varchar(150) NOT NULL,
 			question_desc varchar(350),
+			required bool NOT NULL DEFAULT true,
 			PRIMARY KEY  (question_id)
 		)ENGINE=InnoDB AUTO_INCREMENT=1;';
 		dbDelta($sql_review_question_table);

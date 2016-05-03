@@ -48,9 +48,21 @@
                                         echo '<option value="'.$option['option_id'].'">'.$option['option_name'].'</option>';
                                     }
                                  ?>
-							</select>
-							<label><?php _e( 'Select all the answer-options you like to add', 'textdomain' ); ?></label>
-                            <a href='#'>Add new option? (not working yet)</a>
+                             </select>
+                             <label><?php _e( 'Select all the answer-options you like to add', 'textdomain' ); ?></label>
+                             <a href='#'>Add new option? (not working yet)</a>
+                        </td>
+                <tr valign="top">
+                        <th scope="row"><?php _e( 'Required to answer', 'textdomain' ); ?></th>
+                        <td>
+
+                            <select name="required">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                            <label><?php _e( 'Is this question required to answer?', 'textdomain' );?></label>
+
+
 						</td>
 				</tr>
 				</tbody>

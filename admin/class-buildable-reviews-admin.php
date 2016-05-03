@@ -171,10 +171,12 @@ class Buildable_reviews_admin {
         $type_id = (int)$_POST['type'];
 		$question_name = sanitize_text_field($_POST['question-name']);
 		$question_desc = sanitize_text_field($_POST['desciption']);
+		$required = sanitize_text_field($_POST['required']);
 
 
         $wpdb->insert($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION,
-			array('type_id' => $type_id, 'question_name' => $question_name, 'question_desc' => $question_desc),
+			array('type_id' => $type_id, 'question_name' => $question_name,
+				'question_desc' => $question_desc, 'required' => $required),
 			array('%d', '%s', '%s'));
 
 		//insert question options if any

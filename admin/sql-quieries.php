@@ -114,7 +114,7 @@ class BR_SQL_Quieries {
      public static function get_all_questions() {
          global $wpdb;
 
-         $sql = 'SELECT Q.question_id, Q.question_name, Q.question_desc, T.question_type_name FROM ' .$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION. ' Q
+         $sql = 'SELECT Q.question_id, Q.question_name, Q.question_desc, T.question_type_name, Q.required FROM ' .$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION. ' Q
          LEFT JOIN xpn4_br_review_question_type T
          ON Q.type_id = T.question_type_id';
 
@@ -155,6 +155,17 @@ class BR_SQL_Quieries {
 
          return $result;
 
+     }
+
+     public static function get_question($id) {
+         global $wpdb;
+
+         $sql = 'SELECT * FROM ' .$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION .'
+         WHERE question_id = '.$id;
+
+        $result = $wpdb->get_results( $sql, 'ARRAY_A' );
+
+         return $result;
      }
 }
 

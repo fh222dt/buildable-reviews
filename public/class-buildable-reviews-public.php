@@ -66,19 +66,26 @@ class Buildable_reviews_Public {
 			$max_lenght = 250;		//TODO: what is maxlenght??
 			$answers = [];
 			foreach ($_POST as $question_id => &$answer) {
-				//validera
-				if(empty($answer)) {		//all frågor kommer ej va obligatoriska
-					//skicka ut felmeddelanden
-				}
-				if(strlen($answer) > $max_lenght) {
-					//skicka ut felmeddelanden
-				}
 				//remove all non question answers from POST by only store POST-keys with question_id:s
-				//Sanitize input from user & store in new array
 				if(is_numeric($question_id)) {
-					$answers[$question_id] = sanitize_text_field($answer);
+					//required q can't be empty
+					if(Buildable_reviews_Public::is_required_question($question_id) == true) {
+						if(empty($answer)) {
+							//felhantera
+							exit;
+						}
+					}
 				}
 
+				if(strlen($answer) > $max_lenght) {
+					//felhantera
+				}
+				else {
+					if(is_numeric($question_id)) {
+						//Sanitize input from user & store in new array
+						$answers[$question_id] = sanitize_text_field($answer);
+					}
+				}
 
 			}
 
@@ -88,7 +95,7 @@ class Buildable_reviews_Public {
 			$post_id = $_POST['post_id'];
 			$status_id = get_option('br_standard_status'); //returns status_id from plugin settings
 			$now = date("Y-m-d H:i:s");
-			
+
 			$wpdb->insert($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW,
 				array('user_id' => $user_id, 'posts_id' => $post_id, 'status_id' => $status_id, 'created_at' => $now),
 				array('%d', '%d', '%d', '%s'));
@@ -105,6 +112,15 @@ class Buildable_reviews_Public {
 			//TODO:ge inlämningsbesked
 			wp_redirect(home_url());
 		}
+	}
+
+	public function is_required_question($id) {
+		$sql = new BR_SQL_Quieries();
+		$result = $sql->get_question($id);
+
+		$bool = $result['required'];
+
+		return $bool;
 	}
 
 
