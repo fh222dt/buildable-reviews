@@ -150,8 +150,7 @@ class Buildable_reviews_Public {
 		else {
 			return "Ogiltig epost";
 		}
-		// print_r(email_exists($safe_email));
-		// exit;
+
 		if(email_exists($safe_email) === false) {		//new user is created
 			// Generate the password and create the user
 			$password = wp_generate_password(12, false);
@@ -167,7 +166,6 @@ class Buildable_reviews_Public {
 			return $user_id;
 		}
 		else {				//email exists in db
-			//$user = get_user_by('email', $safe_email);
 			$user_id = email_exists($safe_email);
 
 			return $user_id;
