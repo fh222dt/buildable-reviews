@@ -72,7 +72,6 @@ class Buildable_reviews_Public {
 					if(Buildable_reviews_Public::is_required_question($question_id) == true) {
 						if(empty($answer)) {
 							//felhantera
-							exit;
 						}
 					}
 				}
@@ -90,8 +89,23 @@ class Buildable_reviews_Public {
 			}
 
 			//saves review to review db table
-			$current_user = wp_get_current_user();
-			$user_id = $current_user->ID;
+			//$current_user = wp_get_current_user();
+			// print_r($current_user);
+			// exit;
+			// if($current_user->ID != 0) {			//user is logged in
+			// 	$user_id = $current_user->ID;
+			// }
+			//
+			// else {				//new user or not logged in
+				if (isset($_POST['17'])) {		//q-id of epost TODO: clean up
+					$email = $_POST['17'];
+				}
+				$user = Buildable_reviews_Public::check_user($email);
+
+				$user_id = $user;
+			// }
+
+
 			$post_id = $_POST['post_id'];
 			$status_id = get_option('br_standard_status'); //returns status_id from plugin settings
 			$now = date("Y-m-d H:i:s");
@@ -121,6 +135,43 @@ class Buildable_reviews_Public {
 		$bool = $result['required'];
 
 		return $bool;
+	}
+
+	/**
+	 * Checks if user already exists in db, or creates new user from email
+	 * @param  [string] $email
+	 * @return [int]|[string] user_id or validation error
+	 */
+	public function check_user($email) {
+		//validate email
+		if (is_email($email)) {
+			$safe_email = sanitize_email($email);
+		}
+		else {
+			return "Ogiltig epost";
+		}
+		// print_r(email_exists($safe_email));
+		// exit;
+		if(email_exists($safe_email) === false) {		//new user is created
+			// Generate the password and create the user
+			$password = wp_generate_password(12, false);
+			$user_id = wp_create_user($safe_email, $password, $safe_email);
+
+			// Set the role
+			$user = new WP_User($user_id);
+			$user->set_role('contributor');
+
+			// Email the user 		TODO
+			//wp_mail( $email_address, 'Welcome!', 'Your Password: ' . $password );
+
+			return $user_id;
+		}
+		else {				//email exists in db
+			//$user = get_user_by('email', $safe_email);
+			$user_id = email_exists($safe_email);
+
+			return $user_id;
+		}
 	}
 
 

@@ -10,10 +10,10 @@ class BR_public_review_form {
 
     public function br_review_form() {
 
-        if(!is_user_logged_in()){
-
-            return '<p>Du måste vara inloggad för att kunna lämna en recension</p>';    //TODO: omformulera o styla
-        }
+        // if(!is_user_logged_in()){
+        //
+        //     return '<p>Du måste vara inloggad för att kunna lämna en recension</p>';
+        // }
 
 
         $question_templates = new BR_question_templates();
