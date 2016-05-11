@@ -38,11 +38,11 @@ class BR_SQL_Quieries {
      * @param  [type] $id [description]
      * @return [type]     [description]
      */
-     public static function delete_review( $id ) {
+     public static function delete_review($id) {
         global $wpdb;
         $wpdb->delete(
             $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW,
-            [ 'ID' => $id ],
+            [ 'review_id' => $id ],
             [ '%d' ]
         );
     }

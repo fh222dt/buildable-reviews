@@ -130,7 +130,7 @@ class Buildable_reviews_admin {
 	}
 
 	/**
-	 * Updates or edits review from user & redirects back to update view
+	 * Updates or delete review from user
 	 */
 	public function br_update_review() {
         global $wpdb;
@@ -140,25 +140,34 @@ class Buildable_reviews_admin {
             $review_id = $_POST['review-id'];
         }
 
-        $answers = $sql->get_review_answers($review_id);
+		if(isset($_POST['delete'])) {
+			$sql->delete_review($review_id);
 
-		//update textfield-answers of questions in db
-        foreach ($answers as $answer) {
-            if($answer['question_type_name'] == 'Textfield'){
-                $answer['answer'] = sanitize_text_field($_POST['answer-id-'. $answer['answer_id']]);
-
-                $wpdb->update($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_ANSWER, array('answer' => $answer['answer']),
-                array('answer_id' => $answer['answer_id']));         //TODO: kankse ange datatyper?
-            }
-        }
-		//update status in db
-		if(isset($_POST['status'])) {
-			$status = (int)$_POST['status'];
-			$wpdb->update($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW, array('status_id' => $status),
-				array('review_id' => $review_id));
+			wp_redirect('admin.php?page=buildable-reviews');
 		}
 
-        wp_redirect('admin.php?page=buildable-reviews-details&review-id='.$review_id);
+		else {
+
+	        $answers = $sql->get_review_answers($review_id);
+
+			//update textfield-answers of questions in db
+	        foreach ($answers as $answer) {
+	            if($answer['question_type_name'] == 'Textfield'){
+	                $answer['answer'] = sanitize_text_field($_POST['answer-id-'. $answer['answer_id']]);
+
+	                $wpdb->update($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_ANSWER, array('answer' => $answer['answer']),
+	                array('answer_id' => $answer['answer_id']));         //TODO: kankse ange datatyper?
+	            }
+	        }
+			//update status in db
+			if(isset($_POST['status'])) {
+				$status = (int)$_POST['status'];
+				$wpdb->update($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW, array('status_id' => $status),
+					array('review_id' => $review_id));
+			}
+
+	        wp_redirect('admin.php?page=buildable-reviews-details&review-id='.$review_id);
+		}
     }
 
 	/**

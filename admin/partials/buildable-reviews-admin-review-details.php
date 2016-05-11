@@ -73,7 +73,8 @@ else {                        //TODO: fånga om det är ett id som inte finns
         <?php
 		submit_button( __( 'Uppdatera', 'textdomain' ), 'primary');
         //submit_button( __( 'Ta bort hela recensionen', 'textdomain' ), 'delete' );    //TODO: delete review
-		?>
+        ?>
+        <input type="submit" name="delete" id="submit" class="button delete" value="Ta bort hela recensionen">
      </form>
 
 </div>
