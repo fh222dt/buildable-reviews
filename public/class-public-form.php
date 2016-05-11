@@ -46,6 +46,10 @@ class BR_public_review_form {
         $form = '<h2>Lämna din recension</h2>
                 <form method="post" action="">';
 
+        //TODO: sort questions based on setting
+        $order_from_setting = array_map('intval', explode(',', get_option('br_question_order')));
+        $sorted_questions = [];
+
         $output;
         foreach ($usable_questions as $question) {
             $output.= $question_templates->render_question($question);
