@@ -36,9 +36,17 @@ class BR_Settings
             'general_settings_section'        //section slug_name id??
         );
 
+        add_settings_field(
+            'br_question_order',        //id
+            'Ordning av frågor',                //titel
+            array($this, 'br_question_order_callback'),    //callback
+            'buildable-reviews-settings',        //page slug_name
+            'general_settings_section'        //section slug_name id??
+        );
+
         register_setting(
             'br_settings',
-            'br_standard_status',        //hmm
+            'br_standard_status',
             array($this, 'br_sanitize_standard_status')
         );
 
@@ -46,6 +54,12 @@ class BR_Settings
             'br_settings',
             'br_question_algorithm',
             array($this, 'br_sanitize_question_algorithm')
+        );
+
+        register_setting(
+            'br_settings',
+            'br_question_order',
+            array($this, 'br_sanitize_question_order')
         );
     }
 
@@ -81,15 +95,27 @@ class BR_Settings
 
         foreach ($questions as $q) {
             echo
-            '<p class="br-admin">'
+            '<p class="br-admin">
+                Id: '. $q['question_id'] .'   '
                 . $q['question_name'] .
-                    '<span class="br-description">'. $q['question_type_name'] . '</span>
+                    '<span class="br-description">  '. $q['question_type_name'] . '</span>
                     <input type="text" name="br_question_algorithm['. $q['question_id'] .']" class="br-textfield" value="'. $option[$q['question_id']].'" />
                     %
             </p>';
 
         }
     }
+
+    public function br_question_order_callback() {
+
+        echo '<p>Ange i vilken ordning du vill att frågorna ska visas. Ange frågornas id-nr. Tex: 3, 7, 1 (1 visas överst)</p>';
+        //tidigare sparade option
+        $option = get_option('br_question_order');
+
+            echo '<input type="text" name="br_question_order" value="'. $option .'" />';
+
+    }
+
     /**
      * Only sanitazing, saves to db either way WTF!!!
      * If not returning, saving is performed anyway
@@ -116,6 +142,11 @@ class BR_Settings
         else {
             return $input;
         }
+    }
+
+    public function br_sanitize_question_order($input) {
+        //TODO kolla av att det är nåt av värdena i db?
+        return $input;
     }
 
     public function br_general_settings_callback() {
