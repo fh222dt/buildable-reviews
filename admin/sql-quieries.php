@@ -160,7 +160,20 @@ class BR_SQL_Quieries {
      public static function get_question($id) {
          global $wpdb;
 
-         $sql = 'SELECT * FROM ' .$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION .'
+         $sql = 'SELECT Q.question_id, Q.type_id, Q.question_name, Q.question_desc, Q.required, T.question_type_name FROM ' .$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION .' Q
+         LEFT JOIN '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_TYPE .' T
+         ON T.question_type_id = Q.type_id
+         WHERE question_id = '.$id;
+
+        $result = $wpdb->get_results( $sql, 'ARRAY_A' );
+
+         return $result;
+     }
+
+     public static function get_question_options($id) {
+         global $wpdb;
+
+         $sql = 'SELECT * FROM ' .$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_OPTION_RELATION .'
          WHERE question_id = '.$id;
 
         $result = $wpdb->get_results( $sql, 'ARRAY_A' );

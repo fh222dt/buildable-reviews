@@ -100,7 +100,7 @@ class BR_Settings
                 . $q['question_name'] .
                     '<span class="br-description">  '. $q['question_type_name'] . '</span>
                     <input type="text" name="br_question_algorithm['. $q['question_id'] .']" class="br-textfield" value="'. $option[$q['question_id']].'" />
-                    %
+                    % <a href="admin.php?page=buildable-reviews-add-question&question-id='.$q['question_id'].'">Edit question</a>
             </p>';
 
         }

@@ -83,8 +83,10 @@ class Buildable_reviews_Activator {
 
 		//Set up REVIEW_QUESTION_OPTION_RELATION table
 		$sql_review_question_option_table = 'CREATE TABLE '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_OPTION_RELATION . ' (
+			qo_id bigint(20) NOT NULL AUTO_INCREMENT,
 			question_id bigint(20) NOT NULL,
-			option_id bigint(20) NOT NULL
+			option_id bigint(20) NOT NULL,
+			PRIMARY KEY  (qo_id)
 		)ENGINE=InnoDB AUTO_INCREMENT=1;';
 		$wpdb->query($sql_review_question_option_table);
 
