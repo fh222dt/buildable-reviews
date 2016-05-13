@@ -91,8 +91,6 @@ class BR_Settings
         //tidigare sparade option
         $option = get_option('br_question_algorithm');
 
-        //echo '<input type="text" name="br_question_algorithm[1]" class="br-textfield" value="'. $option[1].'" />';
-
         foreach ($questions as $q) {
             echo
             '<p class="br-admin">
@@ -108,7 +106,8 @@ class BR_Settings
 
     public function br_question_order_callback() {
 
-        echo '<p>Ange i vilken ordning du vill att frågorna ska visas. Ange frågornas id-nr. Tex: 3, 7, 1 (1 visas överst)</p>';
+        echo '<p>Ange i vilken ordning du vill att frågorna ska visas. Ange frågornas id-nr. Tex: 3, 7, 1 (3 visas överst).
+              Genom att utesluta ett id, kan du välja att en fråga inte visas.</p>';
         //tidigare sparade option
         $option = get_option('br_question_order');
 
