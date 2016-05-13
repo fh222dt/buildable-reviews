@@ -209,39 +209,36 @@ class Buildable_reviews_admin {
 		$required = sanitize_text_field($_POST['required']);
 		$question_id = $_POST['question-id'];
 
-		//  print_r($question_id);
-		//  exit;
 		global $wpdb;
 
 		$wpdb->update($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION,
 			array('type_id' => $type_id, 'question_name' => $question_name,
 				'question_desc' => $question_desc, 'required' => $required),
 			array( 'question_id' => $question_id ));
-			//array('%d', '%s', '%s'));
-
-
 
 		//insert question options if any
 		$options = $_POST['options'];
-		//$q_id = (int)$wpdb->insert_id;
 
 		if (!empty($options)) {
+
+			$options_as_string = implode(",", $options);
+
+			//delete all unselected options
+			$delete = 'DELETE FROM '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_OPTION_RELATION .
+					  ' WHERE option_id NOT IN ('. $options_as_string .') AND question_id = '.$question_id;
+
+			$wpdb->query($delete);
+
 			foreach ($options as $option_id) {
 
-
-				$update = 'INSERT INTO '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_OPTION_RELATION . '
-							SET
-							question_id = '.$question_id.'
-							option_id = '.$option_id.'
-							ON DUPLICATE KEY UPDATE
-							option_id = '.$option_id;
-
+				//insert new options
+				$update = 'INSERT IGNORE INTO '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_OPTION_RELATION .
+						  ' (question_id, option_id ) VALUES ('. $question_id.','.$option_id.');';
 				$wpdb->query($update);
 			}
 		}
 
 		wp_redirect('admin.php?page=buildable-reviews-add-question&question-id='.$question_id);
-
 
 	}
 

@@ -20,6 +20,8 @@
  }
  else {
      $question = null;
+     $saved_options = [];
+     $saved = null;
  }
 
  ?><div class="wrap">
@@ -65,7 +67,7 @@
                                     $options = $sql->get_all_answer_options();
                                     for ($i=0; $i<count($options); $i++) {
                                         $option = $options[$i];
-                                         if (in_array($option['option_id'], $saved_options)) {
+                                         if ($saved_options && in_array($option['option_id'], $saved_options)) {
                                              $saved = $option['option_id'];
                                          }
                                         echo '<option value="'.$option['option_id'].'"';
