@@ -130,7 +130,7 @@ class Buildable_reviews_admin {
 	}
 
 	/**
-	 * Updates or delete review from user
+	 * Updates or edits review from user & redirects back to update view
 	 */
 	public function br_update_review() {
         global $wpdb;
@@ -140,34 +140,25 @@ class Buildable_reviews_admin {
             $review_id = $_POST['review-id'];
         }
 
-		if(isset($_POST['delete'])) {
-			$sql->delete_review($review_id);
+        $answers = $sql->get_review_answers($review_id);
 
-			wp_redirect('admin.php?page=buildable-reviews');
+		//update textfield-answers of questions in db
+        foreach ($answers as $answer) {
+            if($answer['question_type_name'] == 'Textfield'){
+                $answer['answer'] = sanitize_text_field($_POST['answer-id-'. $answer['answer_id']]);
+
+                $wpdb->update($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_ANSWER, array('answer' => $answer['answer']),
+                array('answer_id' => $answer['answer_id']));         //TODO: kankse ange datatyper?
+            }
+        }
+		//update status in db
+		if(isset($_POST['status'])) {
+			$status = (int)$_POST['status'];
+			$wpdb->update($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW, array('status_id' => $status),
+				array('review_id' => $review_id));
 		}
 
-		else {
-
-	        $answers = $sql->get_review_answers($review_id);
-
-			//update textfield-answers of questions in db
-	        foreach ($answers as $answer) {
-	            if($answer['question_type_name'] == 'Textfield'){
-	                $answer['answer'] = sanitize_text_field($_POST['answer-id-'. $answer['answer_id']]);
-
-	                $wpdb->update($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_ANSWER, array('answer' => $answer['answer']),
-	                array('answer_id' => $answer['answer_id']));         //TODO: kankse ange datatyper?
-	            }
-	        }
-			//update status in db
-			if(isset($_POST['status'])) {
-				$status = (int)$_POST['status'];
-				$wpdb->update($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW, array('status_id' => $status),
-					array('review_id' => $review_id));
-			}
-
-	        wp_redirect('admin.php?page=buildable-reviews-details&review-id='.$review_id);
-		}
+        wp_redirect('admin.php?page=buildable-reviews-details&review-id='.$review_id);
     }
 
 	/**
@@ -180,12 +171,10 @@ class Buildable_reviews_admin {
         $type_id = (int)$_POST['type'];
 		$question_name = sanitize_text_field($_POST['question-name']);
 		$question_desc = sanitize_text_field($_POST['desciption']);
-		$required = sanitize_text_field($_POST['required']);
 
 
         $wpdb->insert($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION,
-			array('type_id' => $type_id, 'question_name' => $question_name,
-				'question_desc' => $question_desc, 'required' => $required),
+			array('type_id' => $type_id, 'question_name' => $question_name, 'question_desc' => $question_desc),
 			array('%d', '%s', '%s'));
 
 		//insert question options if any
@@ -201,46 +190,6 @@ class Buildable_reviews_admin {
 		}
         wp_redirect('admin.php?page=buildable-reviews-settings');
     }
-
-	public function br_update_question() {
-		$type_id = (int)$_POST['type'];
-		$question_name = sanitize_text_field($_POST['question-name']);
-		$question_desc = sanitize_text_field($_POST['desciption']);
-		$required = sanitize_text_field($_POST['required']);
-		$question_id = $_POST['question-id'];
-
-		global $wpdb;
-
-		$wpdb->update($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION,
-			array('type_id' => $type_id, 'question_name' => $question_name,
-				'question_desc' => $question_desc, 'required' => $required),
-			array( 'question_id' => $question_id ));
-
-		//insert question options if any
-		$options = $_POST['options'];
-
-		if (!empty($options)) {
-
-			$options_as_string = implode(",", $options);
-
-			//delete all unselected options
-			$delete = 'DELETE FROM '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_OPTION_RELATION .
-					  ' WHERE option_id NOT IN ('. $options_as_string .') AND question_id = '.$question_id;
-
-			$wpdb->query($delete);
-
-			foreach ($options as $option_id) {
-
-				//insert new options
-				$update = 'INSERT IGNORE INTO '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_OPTION_RELATION .
-						  ' (question_id, option_id ) VALUES ('. $question_id.','.$option_id.');';
-				$wpdb->query($update);
-			}
-		}
-
-		wp_redirect('admin.php?page=buildable-reviews-add-question&question-id='.$question_id);
-
-	}
 
 
 	/**

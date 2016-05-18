@@ -83,10 +83,8 @@ class Buildable_reviews_Activator {
 
 		//Set up REVIEW_QUESTION_OPTION_RELATION table
 		$sql_review_question_option_table = 'CREATE TABLE '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_OPTION_RELATION . ' (
-			qo_id bigint(20) NOT NULL AUTO_INCREMENT,
 			question_id bigint(20) NOT NULL,
-			option_id bigint(20) NOT NULL,
-			PRIMARY KEY  (qo_id)
+			option_id bigint(20) NOT NULL
 		)ENGINE=InnoDB AUTO_INCREMENT=1;';
 		$wpdb->query($sql_review_question_option_table);
 
@@ -103,11 +101,6 @@ class Buildable_reviews_Activator {
 			REFERENCES ' . $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_OPTION . '(option_id)
     		ON DELETE CASCADE';
  		$wpdb->query($fq2_review_question_option_table);
-
-		//unique index to avoid dups (using ignore at insert)
-		$index_review_question_option_table = 'ALTER TABLE ' .. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_OPTION_RELATION . '
-			ADD UNIQUE INDEX(question_id, option_id)';
-		$wpdb->query($index_review_question_option_table);
 
 		//Set up REVIEW_QUESTION_RELATION table
 		$sql_review_question_relation_table = 'CREATE TABLE '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_RELATION . ' (
@@ -136,7 +129,6 @@ class Buildable_reviews_Activator {
 			type_id bigint(20) NOT NULL,
 			question_name varchar(150) NOT NULL,
 			question_desc varchar(350),
-			required bool NOT NULL DEFAULT true,
 			PRIMARY KEY  (question_id)
 		)ENGINE=InnoDB AUTO_INCREMENT=1;';
 		dbDelta($sql_review_question_table);

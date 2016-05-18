@@ -36,17 +36,9 @@ class BR_Settings
             'general_settings_section'        //section slug_name id??
         );
 
-        add_settings_field(
-            'br_question_order',        //id
-            'Ordning av frågor',                //titel
-            array($this, 'br_question_order_callback'),    //callback
-            'buildable-reviews-settings',        //page slug_name
-            'general_settings_section'        //section slug_name id??
-        );
-
         register_setting(
             'br_settings',
-            'br_standard_status',
+            'br_standard_status',        //hmm
             array($this, 'br_sanitize_standard_status')
         );
 
@@ -54,12 +46,6 @@ class BR_Settings
             'br_settings',
             'br_question_algorithm',
             array($this, 'br_sanitize_question_algorithm')
-        );
-
-        register_setting(
-            'br_settings',
-            'br_question_order',
-            array($this, 'br_sanitize_question_order')
         );
     }
 
@@ -73,8 +59,8 @@ class BR_Settings
         <?php
         //gör dropdown med vald status markerad
         foreach ($status_names as $name) {
-            echo '<option name="br_standard_status['. $name['status_name'] .']" value="'.$name['status_id'] .'"';
-            selected($option, $name['status_id']);
+            echo '<option name="br_standard_status['. $name['status_name'] .']" value="'.$name['status_name'] .'"';
+            selected($option, $name['status_name']);
             echo '>'. $name['status_name'] .'</option>';
         }
         ?>
@@ -91,30 +77,19 @@ class BR_Settings
         //tidigare sparade option
         $option = get_option('br_question_algorithm');
 
+        //echo '<input type="text" name="br_question_algorithm[1]" class="br-textfield" value="'. $option[1].'" />';
+
         foreach ($questions as $q) {
             echo
-            '<p class="br-admin">
-                Id: '. $q['question_id'] .'   '
+            '<p class="br-admin">'
                 . $q['question_name'] .
-                    '<span class="br-description">  '. $q['question_type_name'] . '</span>
+                    '<span class="br-description">'. $q['question_type_name'] . '</span>
                     <input type="text" name="br_question_algorithm['. $q['question_id'] .']" class="br-textfield" value="'. $option[$q['question_id']].'" />
-                    % <a href="admin.php?page=buildable-reviews-add-question&question-id='.$q['question_id'].'">Edit question</a>
+                    %
             </p>';
 
         }
     }
-
-    public function br_question_order_callback() {
-
-        echo '<p>Ange i vilken ordning du vill att frågorna ska visas. Ange frågornas id-nr. Tex: 3, 7, 1 (3 visas överst).
-              Genom att utesluta ett id, kan du välja att en fråga inte visas.</p>';
-        //tidigare sparade option
-        $option = get_option('br_question_order');
-
-            echo '<input type="text" name="br_question_order" value="'. $option .'" />';
-
-    }
-
     /**
      * Only sanitazing, saves to db either way WTF!!!
      * If not returning, saving is performed anyway
@@ -141,11 +116,6 @@ class BR_Settings
         else {
             return $input;
         }
-    }
-
-    public function br_sanitize_question_order($input) {
-        //TODO kolla av att det är nåt av värdena i db?
-        return $input;
     }
 
     public function br_general_settings_callback() {

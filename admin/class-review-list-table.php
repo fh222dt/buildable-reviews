@@ -9,7 +9,7 @@ require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/admin/sql-quieries
  */
 class BR_reviews_list_table extends WP_List_Table {
     /*
-     * Quiry the db
+     * Quire the db
      */
      private $sql;
 	/**
