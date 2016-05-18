@@ -90,6 +90,20 @@ class BR_Settings
 
         }
     }
+<<<<<<< HEAD
+=======
+
+    public function br_question_order_callback() {
+
+        echo '<p>Ange i vilken ordning du vill att frågorna ska visas. Ange frågornas id-nr. Tex: 3, 7, 1 (1 visas överst)</p>';
+        //tidigare sparade option
+        $option = get_option('br_question_order');
+
+            echo '<input type="text" name="br_question_order" value="'. $option .'" />';
+
+    }
+
+>>>>>>> parent of e68c778... display q:s based on order from settings
     /**
      * Only sanitazing, saves to db either way WTF!!!
      * If not returning, saving is performed anyway
