@@ -20,7 +20,8 @@ class BR_public_review_form {
         $question_options = $sql->get_all_answer_option_relations();        //question_id, name
         $array = [];
 
-        foreach ($usable_questions as &$q) {
+        //prepair all questions with it's answer options
+        foreach  ($usable_questions as &$q) {
             foreach ($question_options as &$option) {
                 //VIP treatment for benefits question (benefits is a custom taxonomy)
                 if($q['question_type_name'] == 'Benefits') {
@@ -39,21 +40,26 @@ class BR_public_review_form {
 
         $form = '<h2>Lämna din recension</h2>
                 <form method="post" action="">';
+
         //sort questions based on setting
-        $order_from_setting = array_map('intval', explode(',', get_option('br_question_order')));
-        $sorted_questions = [];
+        $order_from_setting = array_map('intval', explode(',', get_option('br_question_order'))); //from string to array
+        $sorted_questions = [];        //holds q:s in sorted order
         $usable_questions = array_column($usable_questions, null, 'question_id');
 
+        //do the sorting
         foreach ($order_from_setting as $id) {
             $sorted_questions[] = $usable_questions[$id];
         }
 
-        $output ='';
 
+
+        //print each question
+        $output ='';
         foreach ($sorted_questions as $question) {
             $output.= $question_templates->render_question($question);
         }
 
+        //finish the form
         $form .= $output;
         $form .= '<input type="hidden" name="action" value="br_submit_review" />
                 <input type="hidden" name="post_id" value="'. get_the_ID().'" />
@@ -86,7 +92,7 @@ class BR_public_review_form {
                 return $a['category'] <=> $b['category'];
             });
         }
-        
+
         return $benefits;
     }
 }
