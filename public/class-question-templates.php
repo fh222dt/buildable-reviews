@@ -28,7 +28,12 @@ class BR_question_templates {
             $output .= $this->render_radio($options, $question);
         }
 
-        $output .=         '</div>';
+        else if($type == 'Benefits') {
+
+            $output .= $this->render_benefits($options, $question);
+        }
+
+        $output .= '</div>';
 
         $output .= '</div>';
 
@@ -37,11 +42,11 @@ class BR_question_templates {
 
     public function render_checkbox($options, $question) {
         $output;
+
         foreach ($options as $option) {
-            $output .= '<input type="checkbox" name="'. $question['question_id'] .'" value="'. $option .'"></input>
+            $output .= '<input type="checkbox" name="'. $question['question_id'] .'[]" value="'. $option .'"></input>
                         <label>'. $option .'</label>';
         }
-        //TODO: gruppera ??
 
         return $output;
     }
@@ -59,6 +64,33 @@ class BR_question_templates {
             $output .= '<input type="radio" name="'. $question['question_id'] .'" value="'. $option .'"></input>
                         <label>'. $option .'</label>';
         }
+        return $output;
+    }
+
+    public function render_benefits($options, $question) {
+        $output;
+        //$options => id, name, category
+
+        $comparable_category = $options[0]['category'];        //set category to the first to be found
+
+        $output .= '<fieldset><legend>'. esc_attr($comparable_category) .'</legend>';
+
+        foreach ($options as $option) {
+            if ($option['category'] != $comparable_category) {
+                $output .= '</fieldset><fieldset><legend>'. esc_attr($option['category']) .'</legend>';
+
+                $comparable_category = $option['category'];
+            }
+            else {
+
+            }
+
+            $output .= '<input type="checkbox" name="'. $question['question_id'] .'[]" value="'. $option['id'] .'"></input>
+                        <label>'. esc_attr($option['name']) .'</label>';
+        }
+
+        $output .= '</fieldset>';
+
         return $output;
     }
 }
