@@ -81,11 +81,11 @@ class Buildable_reviews_Public {
 			//validate all answers
 			foreach ($_POST as $question_id => $answer) {
 				//remove all non question answers from POST by only store POST-keys with question_id:s
-				if(is_numeric($question_id)) {
+				if(is_numeric($question_id) || $question_id == 'email') {
 
 					//required q can't be empty
 					$required_question = Buildable_reviews_Public::is_required_question($question_id);
-					if($required_question == true) {
+					if($required_question == true || $question_id == 'email') {
 						if(empty($answer)) {
 							//TODO skicka inte form
 							$error = true;
@@ -110,7 +110,7 @@ class Buildable_reviews_Public {
 						//Sanitize input from user & store in new array
 						$validated_answers[$question_id] = sanitize_text_field($answer);
 					}
-					//answer has multiple values, store all of them in new array in string format
+					//answer has multiple values, store all of them in validated_answers-array in string format
 					else {
 						$answer = implode(', ', $answer);
 						$validated_answers[$question_id] = sanitize_text_field($answer);
@@ -126,50 +126,32 @@ class Buildable_reviews_Public {
 			}
 			//save if error is false
 			if($error == false) {
-				echo "save";
+				echo "yes!!!!!";
+				//set parameters
+				$user_id = Buildable_reviews_Public::check_user();	//if isset
+				$post_id = esc_attr($_POST['post_id']);				//if isset
+				$status_id = get_option('br_standard_status'); //returns status_id from plugin settings
+				$now = date("Y-m-d H:i:s");
+
+				//saves review to db
+				$wpdb->insert($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW,
+					array('user_id' => $user_id, 'posts_id' => $post_id, 'status_id' => $status_id, 'created_at' => $now),
+					array('%d', '%d', '%d', '%s'));
+
+				//saves answers to db
+				$review_id = (int)$wpdb->insert_id;
+
+				foreach ($validated_answers as $q => $a) {
+					$wpdb->insert($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_ANSWER,
+						array('review_id' => $review_id, 'question_id' => $q, 'answer' => $a),
+						array('%d', '%d', '%s'));
+				}
+
 				unset($_SESSION['br_form_error']);
-				//visa skickat meddelande
+
+				//TODO:ge inlämningsbesked, disable form,
 
 			}
-
-
-
-			//saves review to review db table
-			//$current_user = wp_get_current_user();
-
-			// if($current_user->ID != 0) {			//user is logged in
-			// 	$user_id = $current_user->ID;
-			// }
-			//
-			// else {				//new user or not logged in
-			// 	if (isset($_POST['17'])) {		//q-id of epost TODO: clean up
-			// 		$email = $_POST['17'];
-			// 	}
-			// 	$user = Buildable_reviews_Public::check_user($email);
-			//
-			// 	$user_id = $user;
-			// // }
-			//
-			//
-			// $post_id = $_POST['post_id'];
-			// $status_id = get_option('br_standard_status'); //returns status_id from plugin settings
-			// $now = date("Y-m-d H:i:s");
-			//
-			// $wpdb->insert($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW,
-			// 	array('user_id' => $user_id, 'posts_id' => $post_id, 'status_id' => $status_id, 'created_at' => $now),
-			// 	array('%d', '%d', '%d', '%s'));
-			//
-			// //saves all answers to answers db table
-			// $review_id = (int)$wpdb->insert_id;
-			//
-			// foreach ($answers as $q => $a) {
-			// 	$wpdb->insert($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_ANSWER,
-			// 		array('review_id' => $review_id, 'question_id' => $q, 'answer' => $a),
-			// 		array('%d', '%d', '%s'));
-			// }
-			//
-			// //TODO:ge inlämningsbesked
-			// wp_redirect(home_url());
 		}
 	}
 	/**
@@ -191,7 +173,19 @@ class Buildable_reviews_Public {
 	 * @param  [string] $email
 	 * @return [int]|[string] user_id or validation error
 	 */
-	public function check_user($email) {
+	public function check_user() {
+
+
+		if($current_user->ID != 0) {			//user is logged in
+			$current_user = wp_get_current_user();
+			$user_id = $current_user->ID;
+		}
+		else {									//new user or not logged in
+			if (isset($_POST[7])) {		//TODO
+				$email = esc_attr($_POST[7]);
+			}
+		}
+
 		//validate email
 		if (is_email($email)) {
 			$safe_email = sanitize_email($email);

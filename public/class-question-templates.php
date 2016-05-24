@@ -129,11 +129,12 @@ class BR_question_templates {
     }
 
     public function render_email($question) {
+        $email_question_id = 7;    //TODO
         $posted_value = null;
-        if(isset($_POST['email'])) {
-            $posted_value = $_POST['email'];
+        if(isset($_POST[$email_question_id])) {
+            $posted_value = $_POST[$email_question_id];
         }
-        $output = '<input type="email" name="email" '. ($question['required'] == true ? 'required' : '') .' '. esc_attr($posted_value) .' >';
+        $output = '<input type="email" name="'. $email_question_id .'" '. ($question['required'] == true ? 'required' : '') .' value="'. esc_attr($posted_value) .'" >';
 
         return $output;
     }
