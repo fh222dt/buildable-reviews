@@ -64,7 +64,6 @@ class Buildable_reviews_Public {
 		session_start();
 		if (isset($_POST['action']) && $_POST['action'] == 'br_submit_review') {
 
-
 			$error = false; 		//will be true if validation failes
 			$max_lenght = 250;		// TODO: what is max lenght??
 			$validated_answers = [];			// Holds all validated answers
@@ -78,8 +77,9 @@ class Buildable_reviews_Public {
 				}
 			}
 
+
 			//validate all answers
-			foreach ($_POST as $question_id => &$answer) {
+			foreach ($_POST as $question_id => $answer) {
 				//remove all non question answers from POST by only store POST-keys with question_id:s
 				if(is_numeric($question_id)) {
 
@@ -100,7 +100,6 @@ class Buildable_reviews_Public {
 						}
 					}
 
-
 					//answer has only one value
 					if(!is_array($answer)) {
 						//remove chars after max_lenght if to long answer
@@ -119,7 +118,6 @@ class Buildable_reviews_Public {
 				}
 			}
 
-
 			//remove all empty answers
 			foreach ($validated_answers as $question_id =>$answer) {
 				if(empty($answer)) {
@@ -131,6 +129,7 @@ class Buildable_reviews_Public {
 				echo "save";
 				unset($_SESSION['br_form_error']);
 				//visa skickat meddelande
+
 			}
 
 

@@ -12,13 +12,11 @@ class BR_question_templates {
         //add error messages thrue session
         if (isset($_SESSION['br_form_error']) ) {
             $error = $_SESSION['br_form_error'];
-            //if($error[$question['question_id']] == $question['question_id']) {
+
             if(array_key_exists($question['question_id'], $error)) {
                 $output .= '<span style="color: red;">'. $error[$question['question_id']] .'</span>';
             }
         }
-        $i = $question['question_id'];
-        //print_r($error[$i]);
 
         $output .= '<p>'. esc_attr($question['question_desc'] ).'</p>';
 
@@ -52,41 +50,41 @@ class BR_question_templates {
 
     public function render_checkbox($options, $question) {
         $output;
-        $post = $_POST[$question['question_id']];
+        $posted_value = null;
+
         foreach ($options as $option) {
+            if (in_array($option, $_POST[$question['question_id']])) {
+                $posted_value = $option;
+            }
 
-            $current = esc_attr(in_array($option, $post) );        //'. checked( $option, 'ja').'
-            $output .= '<input type="checkbox" name="'. $question['question_id'] .'[]" value="'. $option .'"
-
-                        ></input>
-                        <label>'. $option .'</label>';
+            $output .= '<input type="checkbox" name="'. $question['question_id'] .'[]" value="'. $option .'" ';
+            $output .= checked($option, $posted_value, false) .'></input><label>'. $option .'</label>';
         }
 
         return $output;
     }
 
     public function render_textfield($question) {
-
-        $output = '<textarea name="'. $question['question_id'] .'" '. ($question['required'] == true ? 'required' : '') .'>'. esc_attr($_POST[$question['question_id']]) .'
-        </textarea>';
-        //$output = '<textarea name="'. $question['question_id'] .'"></textarea>';
+        $posted_value = $_POST[$question['question_id']];
+        $output = '<textarea name="'. $question['question_id'] .'" '. ($question['required'] == true ? 'required' : '') .'>'. esc_attr($posted_value) .'</textarea>';
 
         return $output;
     }
 
     public function render_radio($options, $question) {    //kanske ett 3e arg för hur det ska stylas??
         $output;
-        foreach ($options as $option) {        //TODO
-            $output .= '<input type="radio" name="'. $question['question_id'] .'" value="'. $option .'"'. ($question['required'] == true ? 'required' : '' ).''.
-                        checked($option, esc_attr($_POST[$question['question_id']])).'></input>
+        $posted_value = $_POST[$question['question_id']];
+        foreach ($options as $option) {
+            $output .= '<input type="radio" name="'. $question['question_id'] .'" value="'. $option .'"';
+            $output .= ($question['required'] == true ? 'required' : '' ).''.
+                        checked($option, esc_attr($posted_value), false).'></input>
                         <label>'. $option .'</label>';
         }
         return $output;
     }
 
-    public function render_benefits($options, $question) {
+    public function render_benefits($options, $question) { //$options => id, name, category
         $output;
-        //$options => id, name, category
 
         $comparable_category = $options[0]['category'];        //set category to the first to be found
 
@@ -99,8 +97,15 @@ class BR_question_templates {
                 $comparable_category = $option['category'];
             }
 
-            $output .= '<input type="checkbox" name="'. $question['question_id'] .'[]" value="term_id '. $option['id'] .'"></input>
-                        <label>'. esc_attr($option['name']) .'</label>';
+            $value = 'term_id '. $option['id'];
+            $posted_value = null;
+            if (in_array($value, $_POST[$question['question_id']])) {
+                $posted_value = $value;
+            }
+
+            $output .= '<input type="checkbox" name="'. $question['question_id'] .'[]" value="'. $value.'" ';
+            $output .= checked($value, $posted_value, false) .'"></input><label>'. esc_attr($option['name']) .'</label>';
+
         }
 
         $output .= '</fieldset>';
