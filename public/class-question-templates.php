@@ -41,6 +41,11 @@ class BR_question_templates {
             $output .= $this->render_benefits($options, $question);
         }
 
+        else if($type == 'Email') {
+
+            $output .= $this->render_email($question);
+        }
+
         $output .= '</div>';
 
         $output .= '</div>';
@@ -49,12 +54,14 @@ class BR_question_templates {
     }
 
     public function render_checkbox($options, $question) {
-        $output;
+        $output ='';
         $posted_value = null;
 
         foreach ($options as $option) {
-            if (in_array($option, $_POST[$question['question_id']])) {
-                $posted_value = $option;
+            if(isset($_POST[$question['question_id']]) && is_array($_POST[$question['question_id']])) {
+                if (in_array($option, $_POST[$question['question_id']])) {
+                    $posted_value = $option;
+                }
             }
 
             $output .= '<input type="checkbox" name="'. $question['question_id'] .'[]" value="'. $option .'" ';
@@ -65,15 +72,21 @@ class BR_question_templates {
     }
 
     public function render_textfield($question) {
-        $posted_value = $_POST[$question['question_id']];
+        $posted_value = null;
+        if(isset($_POST[$question['question_id']])) {
+            $posted_value = $_POST[$question['question_id']];
+        }
         $output = '<textarea name="'. $question['question_id'] .'" '. ($question['required'] == true ? 'required' : '') .'>'. esc_attr($posted_value) .'</textarea>';
 
         return $output;
     }
 
     public function render_radio($options, $question) {    //kanske ett 3e arg för hur det ska stylas??
-        $output;
-        $posted_value = $_POST[$question['question_id']];
+        $output ='';
+        $posted_value = null;
+        if(isset($_POST[$question['question_id']])) {
+            $posted_value = $_POST[$question['question_id']];
+        }
         foreach ($options as $option) {
             $output .= '<input type="radio" name="'. $question['question_id'] .'" value="'. $option .'"';
             $output .= ($question['required'] == true ? 'required' : '' ).''.
@@ -84,7 +97,7 @@ class BR_question_templates {
     }
 
     public function render_benefits($options, $question) { //$options => id, name, category
-        $output;
+        $output ='';
 
         $comparable_category = $options[0]['category'];        //set category to the first to be found
 
@@ -99,8 +112,10 @@ class BR_question_templates {
 
             $value = 'term_id '. $option['id'];
             $posted_value = null;
-            if (in_array($value, $_POST[$question['question_id']])) {
-                $posted_value = $value;
+            if(isset($_POST[$question['question_id']]) && is_array($_POST[$question['question_id']])) {
+                if (in_array($value, $_POST[$question['question_id']])) {
+                    $posted_value = $value;
+                }
             }
 
             $output .= '<input type="checkbox" name="'. $question['question_id'] .'[]" value="'. $value.'" ';
@@ -109,6 +124,16 @@ class BR_question_templates {
         }
 
         $output .= '</fieldset>';
+
+        return $output;
+    }
+
+    public function render_email($question) {
+        $posted_value = null;
+        if(isset($_POST['email'])) {
+            $posted_value = $_POST['email'];
+        }
+        $output = '<input type="email" name="email" '. ($question['required'] == true ? 'required' : '') .' '. esc_attr($posted_value) .' >';
 
         return $output;
     }
