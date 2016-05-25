@@ -58,7 +58,7 @@ class BR_Settings
             array($this, 'br_sanitize_question_order')
         );
     }
-    
+
     public function br_standard_status_callback() {
         //hämta alla statusars namn
         $status_names = $this->sql->get_all_status_names();
@@ -67,7 +67,7 @@ class BR_Settings
         ?>
         <select name="br_standard_status" id="br_standard_status">
         <?php
-        
+
         //gör dropdown med vald status markerad
         foreach ($status_names as $name) {
             echo '<option name="br_standard_status['. $name['status_name'] .']" value="'.$name['status_id'] .'"';
@@ -79,7 +79,7 @@ class BR_Settings
         <label>Välj vilken status en recension ska ha som standard när den lämnas av en användare</label>
         <?php
     }
-    
+
     public function br_question_algorithm_callback() {
         echo '<p>Här ställer du in vilken procent en fråga ska väga in i totalbetyget av en recension. Du kan ange mellan 0-100.
         Den totala summan av procentsatserna måste bli 100%</p><br>';
@@ -98,7 +98,7 @@ class BR_Settings
             </p>';
         }
     }
-    
+
     public function br_question_order_callback() {
         echo '<p>Ange i vilken ordning du vill att frågorna ska visas. Ange frågornas id-nr. Tex: 3, 7, 1 (3 visas överst).
               Genom att utesluta ett id, kan du välja att en fråga inte visas.</p>';
@@ -106,7 +106,7 @@ class BR_Settings
         $option = get_option('br_question_order');
             echo '<input type="text" name="br_question_order" value="'. $option .'" />';
     }
-    
+
     /**
      * Only sanitazing, saves to db either way WTF!!!
      * If not returning, saving is performed anyway
@@ -115,11 +115,11 @@ class BR_Settings
         //TODO kolla av att det är nåt av värdena i db?
         return $input;
     }
-    
+
     public function br_sanitize_question_algorithm($input) {
         //tidigare sparade option
         $option = get_option('br_question_algorithm');
-        
+
         foreach($input as $element) {
             if(! is_numeric($element)) {
                 add_settings_error('br_question_algorithm', 'br_question_algorithm_error_num', 'Du kan bara ange siffror');
@@ -136,12 +136,12 @@ class BR_Settings
             return $input;
         }
     }
-    
+
     public function br_sanitize_question_order($input) {
         //TODO kolla av att det är nåt av värdena i db?
         return $input;
     }
-    
+
     public function br_general_settings_callback() {
         //echo '<p>Här kan du ändra inställningar för recensionerna</p>';
     }

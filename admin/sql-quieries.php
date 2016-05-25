@@ -65,7 +65,7 @@ class BR_SQL_Quieries {
     public static function get_review_answers($id) {
         global $wpdb;
 
-        $sql = 'SELECT A.answer_id, Q.question_name, A.answer, T.question_type_name FROM ' .$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_ANSWER.' A
+        $sql = 'SELECT A.answer_id, Q.question_name, A.answer, T.question_type_name, Q.question_id FROM ' .$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_ANSWER.' A
         LEFT JOIN xpn4_br_review_question Q
         ON A.question_id = Q.question_id
         LEFT JOIN xpn4_br_review_question_type T

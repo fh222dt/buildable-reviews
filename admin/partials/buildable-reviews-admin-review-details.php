@@ -33,6 +33,11 @@ else {                        //TODO: fånga om det är ett id som inte finns
                     <th scope="row">Datum</th>
                     <td><?php echo $review['created_at']?></td>
                 </tr>
+                <tr valign="top">
+                    <th scope="row">Betyg</th>
+                    <td><?php $score = Buildable_reviews_Admin::get_total_score_of_review($review_id); echo $score .' av 5'; ?>
+                    </td>
+                </tr>
                 <tr>
                     <th scope="row">Frågor</th>
                 </tr>

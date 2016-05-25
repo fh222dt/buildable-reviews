@@ -128,6 +128,57 @@ class Buildable_reviews_admin {
 		$current_views = $this->views[current_filter()];
     	require_once plugin_dir_path( __FILE__ ). 'partials/'.$current_views. '.php';
 	}
+	/**
+	 * Takes the answer algorithm setting
+	 * to set the % of total score each q should have.
+	 *
+	 * Anwser "yes" gives value 5
+	 * Checkboxes gives total no of boxes diveded by answered ones as value
+	 * Textfields doesn't count
+	 *
+	 * @param  [int] $id review_id
+	 * @return [int]     total score ie 3.2 (between 0-5)
+	 */
+	public function get_total_score_of_review($id) {
+		$settings = get_option('br_question_algorithm');		//from settings  return q_id => % of score  Array ( [1] => 90 [2] => 10 [3] => 0 [4] => 0 [5] => 0 [6] => 0 [7] => 0 )
+		$sql = new BR_SQL_Quieries();
+		$answers = $sql->get_review_answers($id);				//returns all questions with its answers by review_id
+		$total_score = 0;
+
+		foreach ($answers as $answer) {
+			$score = 0;
+			//get the % that the answer should weight in the total score
+			$answer_weight = (int)$settings[$answer['question_id']];
+
+			//only count q:s with weight to them
+			if($answer_weight > 0) {
+
+				if(is_numeric($answer['answer'])) {
+					$score = (int)$answer['answer'] * ($answer_weight/100);
+				}
+				else if($answer['answer'] === 'Ja') {
+					$score = 5;
+				}
+				else if($answer['question_type_name'] === 'Radio' || $answer['question_type_name'] === 'Checkbox') {
+
+					//turn answer into array
+					$multiple_answers = array_map('intval', explode(',', $answer['answer']));
+
+					 $total_answers = count($multiple_answers);
+					 $total_options = count($sql->get_question_options($answer['question_id']));
+
+					 if(is_int($total_answers) && is_int($total_options)) {
+					 	$score = $total_answers / $total_options;
+					 }
+				}
+				$total_score = $total_score + $score;
+			}
+		}
+
+		$total_score = round( $total_score, 1, PHP_ROUND_HALF_UP);
+		return $total_score;
+	}
+
 
 	/**
 	 * Updates or delete review from user
@@ -201,7 +252,10 @@ class Buildable_reviews_admin {
 		}
         wp_redirect('admin.php?page=buildable-reviews-settings');
     }
-
+	/**
+	 * [br_update_question description]
+	 * @return [type] [description]
+	 */
 	public function br_update_question() {
 		$type_id = (int)$_POST['type'];
 		$question_name = sanitize_text_field($_POST['question-name']);
