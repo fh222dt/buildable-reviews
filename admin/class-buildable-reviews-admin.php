@@ -179,6 +179,30 @@ class Buildable_reviews_admin {
 		return $total_score;
 	}
 
+	public function get_total_score_of_object($id) {
+		//get all reviews of a specific object
+		$sql = new BR_SQL_Quieries();
+		$all_review_ids = $sql->get_all_review_ids($id);
+
+		$total_score = 0;
+
+		foreach ($all_review_ids as $review) {
+			// print_r($review);
+			// exit;
+			$score = Buildable_reviews_admin::get_total_score_of_review($review['review_id']);
+
+			$total_score += $score;
+		}
+
+		$no_of_review = count($all_review_ids);
+
+		$total_score = $total_score / $no_of_review;
+
+		$total_score = round( $total_score, 1, PHP_ROUND_HALF_UP);
+
+		return $total_score;
+	}
+
 
 	/**
 	 * Updates or delete review from user

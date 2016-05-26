@@ -100,6 +100,19 @@ class BR_SQL_Quieries {
          return $result;
      }
 
+     public static function get_all_review_ids($id) {
+         //SELECT * FROM xpn4_br_review WHERE xpn4_br_review.posts_id = 125
+
+         global $wpdb;
+
+         $sql = 'SELECT * FROM '. $wpdb->prefix .Buildable_reviews::TABLE_NAME_REVIEW .
+                 ' WHERE '. $wpdb->prefix .Buildable_reviews::TABLE_NAME_REVIEW .'.posts_id = '. $id;
+
+         $result = $wpdb->get_results( $sql, 'ARRAY_A' );
+
+         return $result;
+     }
+
      public static function get_all_status_names() {
          global $wpdb;
 
