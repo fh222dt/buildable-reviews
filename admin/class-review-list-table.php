@@ -107,7 +107,7 @@ class BR_reviews_list_table extends WP_List_Table {
 	public function get_sortable_columns() {
 	  $sortable_columns = array(
 	    'employer' => array( 'employer', true ),
-	    'rating' => array( 'rating', false ),
+	    //'rating' => array( 'rating', false ),		//TODO
 		'created_at' => array( 'created_at', false ),
 		'user' => array( 'user', false )
 	  );

@@ -178,6 +178,7 @@ class Buildable_reviews_admin {
 		$total_score = round( $total_score, 1, PHP_ROUND_HALF_UP);
 		return $total_score;
 	}
+	
 	/**
 	 * Returns total score of object.
 	 * @param  [int] $id [the object to be scored]

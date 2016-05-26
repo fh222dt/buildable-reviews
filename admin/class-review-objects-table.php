@@ -100,7 +100,7 @@ class BR_review_objects_table extends WP_List_Table {
 	  $sortable_columns = array(
 		'employer_id' => array( 'employer_id', true ),
 		'employer' => array( 'employer', false ),
-		'rating' => array( 'rating', false ),
+		//'rating' => array( 'rating', false ),  //TODO
 		'most_recent' => array( 'most_recent', false ),
 		'total_no' => array( 'total_no', false )
 	  );
