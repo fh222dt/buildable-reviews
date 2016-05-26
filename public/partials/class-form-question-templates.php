@@ -1,5 +1,5 @@
 <?php
-class BR_question_templates {
+class BR_form_question_templates {
     public function render_question($question){
         $options = $question['options'];
         $type = $question['question_type_name'];

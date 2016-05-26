@@ -56,7 +56,10 @@ class Buildable_reviews_Public {
 
 	public function register_shortcodes() {
 		require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/public/class-public-form.php' );
-		add_shortcode('br-review-form', array('BR_public_review_form', 'br_review_form'));
+		add_shortcode('br-review-form', array('BR_public_display_form', 'br_review_form'));
+		add_shortcode('br-review-result_all', array('BR_public_display_result', 'br_review_object_list'));			//TODO arg id
+		add_shortcode('br-review-result_summary', array('BR_public_display_result', 'br_review_object_summary'));
+
 	}
 
 	public function handle_submited_review() {

@@ -3,10 +3,10 @@
  * This is were the review-form is put together and outputed to the user
  * Use shortcode [br-review-form] to display the review-form
  */
-require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/public/class-question-templates.php' );
+require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/public/partials/class-form-question-templates.php' );
 require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/admin/sql-quieries.php' );
 
-class BR_public_review_form {
+class BR_public_display_form {
 
     public function br_review_form() {
         // if(!is_user_logged_in()){
@@ -14,7 +14,7 @@ class BR_public_review_form {
         //     return '<p>Du måste vara inloggad för att kunna lämna en recension</p>';
         // }
         //
-        $question_templates = new BR_question_templates();
+        $question_templates = new BR_form_question_templates();
         $sql = new BR_SQL_Quieries();
         $usable_questions = $sql->get_all_questions();                      //question_id, question_name, question_desc, question_type_name
         $question_options = $sql->get_all_answer_option_relations();        //question_id, name
@@ -50,8 +50,6 @@ class BR_public_review_form {
         foreach ($order_from_setting as $id) {
             $sorted_questions[] = $usable_questions[$id];
         }
-
-
 
         //print each question
         $output ='';
