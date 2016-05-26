@@ -178,7 +178,11 @@ class Buildable_reviews_admin {
 		$total_score = round( $total_score, 1, PHP_ROUND_HALF_UP);
 		return $total_score;
 	}
-
+	/**
+	 * Returns total score of object.
+	 * @param  [int] $id [the object to be scored]
+	 * @return [float]     [total score of object]
+	 */
 	public function get_total_score_of_object($id) {
 		//get all reviews of a specific object
 		$sql = new BR_SQL_Quieries();
@@ -187,8 +191,6 @@ class Buildable_reviews_admin {
 		$total_score = 0;
 
 		foreach ($all_review_ids as $review) {
-			// print_r($review);
-			// exit;
 			$score = Buildable_reviews_admin::get_total_score_of_review($review['review_id']);
 
 			$total_score += $score;
