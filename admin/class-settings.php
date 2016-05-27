@@ -42,6 +42,16 @@ class BR_Settings
             'buildable-reviews-settings',        //page slug_name
             'general_settings_section'        //section slug_name id??
         );
+        add_settings_field(
+            'br_summarize_min',        //id
+            'Min. antal för att sammanställa',                //titel
+            array($this, 'br_summarize_min_callback'),    //callback
+            'buildable-reviews-settings',        //page slug_name
+            'general_settings_section'        //section slug_name id??
+        );
+
+
+
         register_setting(
             'br_settings',
             'br_standard_status',
@@ -56,6 +66,11 @@ class BR_Settings
             'br_settings',
             'br_question_order',
             array($this, 'br_sanitize_question_order')
+        );
+        register_setting(
+            'br_settings',
+            'br_summarize_min',
+            array($this, 'br_sanitize_summarize_min')
         );
     }
 
@@ -86,7 +101,7 @@ class BR_Settings
         $questions = $this->sql->get_all_questions();
         //tidigare sparade option
         $option = get_option('br_question_algorithm');
-        
+
         foreach ($questions as $q) {
             echo
             '<p class="br-admin">
@@ -105,6 +120,13 @@ class BR_Settings
         //tidigare sparade option
         $option = get_option('br_question_order');
             echo '<input type="text" name="br_question_order" value="'. $option .'" />';
+    }
+
+    public function br_summarize_min_callback() {
+        echo '<p>Ange hur många recensioner MINST som ska finnas för att en sammanfattning ska visas.</p>';
+        //tidigare sparade option
+        $option = get_option('br_summarize_min');
+            echo '<input type="text" name="br_summarize_min" value="'. $option .'" />';
     }
 
     /**
@@ -141,8 +163,12 @@ class BR_Settings
         //TODO kolla av att det är nåt av värdena i db?
         return $input;
     }
+    public function br_sanitize_summarize_min($input) {
+        return $input;
+    }
 
     public function br_general_settings_callback() {
-        //echo '<p>Här kan du ändra inställningar för recensionerna</p>';
     }
+
+
 }
