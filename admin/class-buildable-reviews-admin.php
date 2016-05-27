@@ -280,8 +280,7 @@ class Buildable_reviews_admin {
         wp_redirect('admin.php?page=buildable-reviews-settings');
     }
 	/**
-	 * [br_update_question description]
-	 * @return [type] [description]
+	 * Update a question, change q-type, is_required and so on
 	 */
 	public function br_update_question() {
 		$type_id = (int)$_POST['type'];

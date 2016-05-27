@@ -84,8 +84,8 @@
                         <td>
 
                             <select name="required">
-                                <option value="true">Yes</option>
-                                <option value="false">No</option>
+                                <option value="1" <?php selected("1", $question['required'] ) ?> >Yes</option>
+                                <option value="0" <?php selected("0", $question['required'] ) ?> >No</option>
                             </select>
                             <label><?php _e( 'Is this question required to answer?', 'textdomain' );?></label>
 
