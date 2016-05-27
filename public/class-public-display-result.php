@@ -8,7 +8,11 @@ require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/admin/class-builda
 require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/public/partials/class-result-answer-templates.php' );
 
 class BR_public_display_result {            //TODO footer area
-
+    /**
+     * Returns output for one review
+     * @param  int $review_id
+     * @return string
+     */
     static function br_review_single($review_id) {
         $sql = new BR_SQL_Quieries();
         $answers = $sql->get_review_answers($review_id);        //returns array
@@ -35,7 +39,6 @@ class BR_public_display_result {            //TODO footer area
         $output.='</div>
             <div class="review-footer">
                 <p>Lämnad datum '.date_format($date, 'Y-m-d').'</p>
-                <div>Voting</div>
                 <a href="#">Anmäl till granskning</a>
             </div>
         </div>';
@@ -47,10 +50,10 @@ class BR_public_display_result {            //TODO footer area
      * @param  [int] $object_id
      * @return [string]
      */
-    function br_review_object_list() {    //all reviews by object
+    function br_review_object_list() {
         $sql = new BR_SQL_Quieries();
         $object_id = get_the_ID();
-        $all_review_ids = $sql->get_all_review_ids($object_id);
+        $all_review_ids = $sql->get_all_review_ids($object_id);    //returns all ids that has status = godkänd
 
 
 
@@ -69,9 +72,6 @@ class BR_public_display_result {            //TODO footer area
             </div>';
         }
 
-        // print_r($output);
-        // exit;
-        //TODO return type?
         return $output;
 
     }
@@ -96,12 +96,12 @@ class BR_public_display_result {            //TODO footer area
         return $output;
     }
 
-    static function summarize_review($object_id) {
+    static function summarize_review($object_id) {    //TODO endast om ett visst antal är inlämnat
         //get all answers that belongs to a object
         $sql = new BR_SQL_Quieries();
         $review_ids = $sql->get_all_review_ids($object_id);    //returns array of review_ids
         $all_answers = [];            //a_id, q_id, q_type_name, answer(kommer va alla möjliga typer)
-        foreach ($review_id as $review) {
+        foreach ($review_ids as $review) {
             //get answers
             $answers = $sql->get_review_answers($review);    //returns array of answers to the review id
             foreach ($answers as $answer) {

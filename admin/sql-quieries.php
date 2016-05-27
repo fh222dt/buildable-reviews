@@ -100,14 +100,15 @@ class BR_SQL_Quieries {
          return $result;
      }
     /**
-     * Get all review ids that belongs to a specific employer
+     * Get all review ids that belongs to a specific employer and has status set to "Godkänd"
      */
      public static function get_all_review_ids($id) {
 
          global $wpdb;
 
-         $sql = 'SELECT * FROM '. $wpdb->prefix .Buildable_reviews::TABLE_NAME_REVIEW .
-                 ' WHERE '. $wpdb->prefix .Buildable_reviews::TABLE_NAME_REVIEW .'.posts_id = '. $id;
+         $sql = 'SELECT * FROM '. $wpdb->prefix .Buildable_reviews::TABLE_NAME_REVIEW . ' R
+                  WHERE R.posts_id = '. $id.'
+                  AND R.status_id = 1';
 
          $result = $wpdb->get_results( $sql, 'ARRAY_A' );
 
