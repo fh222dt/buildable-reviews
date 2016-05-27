@@ -6,32 +6,30 @@
 //förmåner % som kryssat för varje??
 class BR_result_answer_templates {
     public function render_answer($answer){
-        $options = $answer['options'];
+        $sql = new BR_SQL_Quieries();
+        $options = $sql->get_question_options($answer['question_id']);
         $type = $answer['question_type_name'];
 
-        // <h4>Frågans namn</h4>
-        // <div>Resultat, olika beroende på fråge-typ</div>
-
-        $output = '<h4>'. esc_attr($question['question_name']) .'</h4>';
+        $output = '<h4>'. esc_attr($answer['question_name']) .'</h4>';
 
 
-        if($type == 'Checkbox') {
+        if($type === 'Checkbox') {
 
-            $output .= $this->render_checkbox($options, $question);
+            $output .= $this->render_checkbox($options, $answer);
         }
-        else if($type == 'Textfield') {
+        else if($type === 'Textfield') {
 
-            $output .= $this->render_textfield($question);
+            $output .= $this->render_textfield($answer);
         }
 
-        else if($type == 'Scale' || $type == 'Radio') {
+        else if($type === 'Scale' || $type == 'Radio') {
 
-            $output .= $this->render_radio($options, $question);
+            $output .= $this->render_radio($options, $answer);
         }
 
-        else if($type == 'Benefits') {
+        else if($type === 'Benefits') {
 
-            $output .= $this->render_benefits($options, $question);
+            $output .= $this->render_benefits($options, $answer);
         }
 
         return $output;
@@ -41,22 +39,22 @@ class BR_result_answer_templates {
         $output ='';
 
 
-        foreach ($options as $option) {
-
-
-        }
+        // foreach ($options as $option) {
+        //
+        //
+        // }
 
         return $output;
     }
 
     public function render_textfield($answer) {
-        $output ='<div class="br-display-answer"><p>'. esc_attr($answer['result']) .'</p></div>';
+        $output ='<div class="br-display-answer"><p>'. esc_attr($answer['answer']) .'</p></div>';
 
         return $output;
     }
 
     public function render_radio($options, $answer) {
-        $output ='<div class="br-display-answer><p>'. esc_attr($answer['result']) .'</p></div>';
+        $output ='<div class="br-display-answer><p>'. esc_attr($answer['answer']) .'</p></div>';
 
         return $output;
     }
@@ -66,6 +64,8 @@ class BR_result_answer_templates {
         $display = new BR_public_display_form();
         $benefits = $display->do_benefits();        //benefits => id, name, category
 
+        //$answer to array
+        $answers = explode(', ', $answer['answer']);
         $output ='<div class="br-display-answer>';
 
         $comparable_category = $benefits[0]['category'];        //set category to the first to be found
@@ -79,10 +79,10 @@ class BR_result_answer_templates {
                 $comparable_category = $benefit['category'];
             }
 
-            $class = .'class="grey"';
+            $class = 'class="grey"';
 
-            if(in_array($benefit, $answer)) {
-                $class = .'class="bold"';
+            if(in_array($benefit, $answers)) {
+                $class = 'class="bold"';
             }
 
             $output .= '<p '.$class .'>'. $benefit['name'] .'</p>';

@@ -139,7 +139,7 @@ class Buildable_reviews_admin {
 	 * @param  [int] $id review_id
 	 * @return [int]     total score ie 3.2 (between 0-5)
 	 */
-	public function get_total_score_of_review($id) {
+	public static function get_total_score_of_review($id) {
 		$settings = get_option('br_question_algorithm');		//from settings  return q_id => % of score  Array ( [1] => 90 [2] => 10 [3] => 0 [4] => 0 [5] => 0 [6] => 0 [7] => 0 )
 		$sql = new BR_SQL_Quieries();
 		$answers = $sql->get_review_answers($id);				//returns all questions with its answers by review_id
@@ -178,13 +178,13 @@ class Buildable_reviews_admin {
 		$total_score = round( $total_score, 1, PHP_ROUND_HALF_UP);
 		return $total_score;
 	}
-	
+
 	/**
 	 * Returns total score of object.
 	 * @param  [int] $id [the object to be scored]
 	 * @return [float]     [total score of object]
 	 */
-	public function get_total_score_of_object($id) {
+ 	public function get_total_score_of_object($id) {
 		//get all reviews of a specific object
 		$sql = new BR_SQL_Quieries();
 		$all_review_ids = $sql->get_all_review_ids($id);

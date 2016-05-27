@@ -4,28 +4,43 @@
  */
 
 require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/admin/sql-quieries.php' );
-require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/admin/sql-quieries.php' );
+require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/admin/class-buildable-reviews-admin.php' );
+require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/public/partials/class-result-answer-templates.php' );
 
-class BR_public_display_result {
+class BR_public_display_result {            //TODO footer area
 
-    static function br_review_single($review_id) {    //one review by review id
+    static function br_review_single($review_id) {
         $sql = new BR_SQL_Quieries();
-        //$review = $sql->($review_id);
+        $answers = $sql->get_review_answers($review_id);        //returns array
 
-        // $output = '<div class="br-review">
-        //     <h3>Betyg'. .'</h3>
-        //     <div class="br-display-question">
-        //         <h4>Frågans namn</h4>
-        //         <div>Resultat, olika beroende på fråge-typ</div>
-        //     </div>
-        //     <div class="review-footer">
-        //         <p>Lämnad datum</p>
-        //         <div>Voting</div>
-        //         <a href="#">Anmäl till granskning</a>
-        //     </div>
-        // </div>';
+        $score = Buildable_reviews_admin::get_total_score_of_review($review_id);        //return float
+        $display = new BR_result_answer_templates();
 
-        return $output = 'mer att göra';
+        $where = 'WHERE R.review_id = '.$review_id.' ';
+        $review = $sql->get_reviews(1, 1, $where);
+        $date = new DateTime($review[0]['created_at']);
+
+
+        $output = '<div class="br-review">
+            <h3>Betyg '. $score .'</h3>
+            <div class="br-display-question">';
+
+        //print_r($answers);
+        //exit;
+
+        foreach ($answers as $answer) {
+            $output .= $display->render_answer($answer);
+        }
+
+        $output.='</div>
+            <div class="review-footer">
+                <p>Lämnad datum '.date_format($date, 'Y-m-d').'</p>
+                <div>Voting</div>
+                <a href="#">Anmäl till granskning</a>
+            </div>
+        </div>';
+
+        return $output;
     }
     /**
      * Returns a list of each individual review of an object

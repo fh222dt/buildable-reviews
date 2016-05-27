@@ -26,22 +26,22 @@ class BR_form_question_templates {
 
             $output .= $this->render_checkbox($options, $question);
         }
-        else if($type == 'Textfield') {
+        else if($type === 'Textfield') {
 
             $output .= $this->render_textfield($question);
         }
 
-        else if($type == 'Scale' || $type == 'Radio') {
+        else if($type === 'Scale' || $type === 'Radio') {
 
             $output .= $this->render_radio($options, $question);
         }
 
-        else if($type == 'Benefits') {
+        else if($type === 'Benefits') {
 
             $output .= $this->render_benefits($options, $question);
         }
 
-        else if($type == 'Email') {
+        else if($type === 'Email') {
 
             $output .= $this->render_email($question);
         }
