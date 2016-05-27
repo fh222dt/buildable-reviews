@@ -99,9 +99,10 @@ class BR_SQL_Quieries {
 
          return $result;
      }
-
+    /**
+     * Get all review ids that belongs to a specific employer
+     */
      public static function get_all_review_ids($id) {
-         //SELECT * FROM xpn4_br_review WHERE xpn4_br_review.posts_id = 125
 
          global $wpdb;
 

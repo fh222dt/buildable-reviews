@@ -55,10 +55,11 @@ class Buildable_reviews_Public {
 	}
 
 	public function register_shortcodes() {
-		require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/public/class-public-form.php' );
+		require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/public/class-public-display-form.php' );
+		require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/public/class-public-display-result.php' );
 		add_shortcode('br-review-form', array('BR_public_display_form', 'br_review_form'));
-		add_shortcode('br-review-result_all', array('BR_public_display_result', 'br_review_object_list'));			//TODO arg id
-		add_shortcode('br-review-result_summary', array('BR_public_display_result', 'br_review_object_summary'));
+		add_shortcode('br-review-result-all', array('BR_public_display_result', 'br_review_object_list'));			//TODO arg id
+		add_shortcode('br-review-result-summary', array('BR_public_display_result', 'br_review_object_summary'));
 
 	}
 
@@ -162,7 +163,7 @@ class Buildable_reviews_Public {
 	 * @param  int  $id
 	 * @return boolean
 	 */
-	public function is_required_question($id) {
+	public static function is_required_question($id) {
 		$sql = new BR_SQL_Quieries();
 		$result = $sql->get_question($id);
 
@@ -176,7 +177,7 @@ class Buildable_reviews_Public {
 	 * @param  [string] $email
 	 * @return [int]|[string] user_id or validation error
 	 */
-	public function check_user() {
+	public static function check_user() {
 
 
 		if($current_user->ID != 0) {			//user is logged in
@@ -261,7 +262,7 @@ class Buildable_reviews_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->buildable_reviews, plugin_dir_url( __FILE__ ) . 'js/buildable-reviews.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->buildable_reviews, plugin_dir_url( __FILE__ ) . 'js/buildable-reviews-public.js', array( 'jquery' ), $this->version, false );
 
 	}
 

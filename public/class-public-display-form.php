@@ -25,7 +25,7 @@ class BR_public_display_form {
             foreach ($question_options as &$option) {
                 //VIP treatment for benefits question (benefits is a custom taxonomy)
                 if($q['question_type_name'] == 'Benefits') {
-                    $benefits = BR_public_review_form::do_benefits();
+                    $benefits = BR_public_display_form::do_benefits();
                     $q['options'] = $benefits;
                 }
                 else if($q['question_id'] == $option['question_id']) {
@@ -67,7 +67,7 @@ class BR_public_display_form {
     }
 
     //add all benefits as options to the question
-    private function do_benefits() {
+    public static function do_benefits() {
         $raw_benefits = get_terms(array(
             'taxonomy' => 'benefit',
             'orderby' => 'meta_value',

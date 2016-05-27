@@ -4,50 +4,117 @@
  */
 
 require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/admin/sql-quieries.php' );
+require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/admin/sql-quieries.php' );
 
 class BR_public_display_result {
 
-    function br_review_single($review_id) {    //one review by review id
+    static function br_review_single($review_id) {    //one review by review id
         $sql = new BR_SQL_Quieries();
-        $review = $sql->get_all_review_ids($review_id);
+        //$review = $sql->($review_id);
 
-        '<div class="br-review">
-            <h3></h3>
-            <div class="br-display-question">
-                <h4>Frågans namn</h4>
-                <div>Resultat, olika beroende på fråge-typ</div>
-            </div>
-            <div class="review-footer">
-                <p>Lämnad datum</p>
-                <div>Voting</div>
-                <a href="#">Anmäl till granskning</a>
-            </div>
-        </div>'
+        // $output = '<div class="br-review">
+        //     <h3>Betyg'. .'</h3>
+        //     <div class="br-display-question">
+        //         <h4>Frågans namn</h4>
+        //         <div>Resultat, olika beroende på fråge-typ</div>
+        //     </div>
+        //     <div class="review-footer">
+        //         <p>Lämnad datum</p>
+        //         <div>Voting</div>
+        //         <a href="#">Anmäl till granskning</a>
+        //     </div>
+        // </div>';
 
-        return $output;
+        return $output = 'mer att göra';
     }
     /**
      * Returns a list of each individual review of an object
      * @param  [int] $object_id
      * @return [string]
      */
-    function br_review_object_list($object_id) {    //all reviews by object
+    function br_review_object_list() {    //all reviews by object
         $sql = new BR_SQL_Quieries();
+        $object_id = get_the_ID();
         $all_review_ids = $sql->get_all_review_ids($object_id);
+
+
 
         //TODO pagination
         $output = '';
-        foreach ($all_review_ids as $review) {
-			$output .= BR_public_display_review::br_review_single($review['review_id']);
-		}
+        if(!empty($all_review_ids)) {
+            foreach ($all_review_ids as $review) {
+        		$output .= BR_public_display_result::br_review_single($review['review_id']);
+        	}
+        }
+        else {
+            $output =
+            '<div class="no-reviews-yet">
+            <p>Det finns inga recensioer ännu. Jobbar du här eller har gjort? <a href="#">
+                Lämna en recension så andra kan läsa om den här arbetsgivaren</a></p>
+            </div>';
+        }
 
+        // print_r($output);
+        // exit;
         //TODO return type?
         return $output;
 
     }
 
-    function br_review_object_summary($object_id) {
+    function br_review_object_summary() {
             //endast om antal recensioner är över x(från en setting)
+            //räkna ut medel & välj 3 random för textsvar
+        $object_id = get_the_ID();
+        $total_score =
+        $no_of_reviews=
+        $summarized_questions = BR_public_display_result::summarize_review($object_id);
+
+        $output = '<div class="br-review">
+            <h3>Samlat betyg'. $total_score .'</h3><p>'. $no_of_reviews .' antal recensioner</p>
+            <div class="br-display-question">';
+                foreach ($summarized_questions as $question) {
+                    $output .= '';//question template
+                }
+
+        $output .='</div>';
+
+        return $output;
+    }
+
+    static function summarize_review($object_id) {
+        //get all answers that belongs to a object
+        $sql = new BR_SQL_Quieries();
+        $review_ids = $sql->get_all_review_ids($object_id);    //returns array of review_ids
+        $all_answers = [];            //a_id, q_id, q_type_name, answer(kommer va alla möjliga typer)
+        foreach ($review_id as $review) {
+            //get answers
+            $answers = $sql->get_review_answers($review);    //returns array of answers to the review id
+            foreach ($answers as $answer) {
+                //add to all_answers
+                $all_answers['answer_id'] = $answer['answer_id'];
+            }
+
+        }
+        //sortera svar efter q_id gör om arrayen så att varje fråga blir ett element o alla svar en array i den
+
+        foreach ($all_answers as $answer) {
+
+            if($all_answers['question_type_name'] === 'Benefits') {
+            //benefits
+            //hur många har kryssat varje ruta? antal eller %
+            }
+            if($all_answers['question_type_name'] === 'Textfield') {
+            //samla ihop 3 random sv textfrågor
+            }
+            if($all_answers['question_type_name'] === 'Scale') {
+                //1-5 visa svar i medeltal (skala) tex 3.92
+            }
+            if($all_answers['question_type_name'] === 'Radio') {
+            //räkna ut %
+            }
+        }
+
+        return; //ett object som har alla svar i form av en sammanfattning
     }
 
 }
