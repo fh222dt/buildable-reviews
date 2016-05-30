@@ -26,7 +26,7 @@ class BR_public_display_result {            //TODO footer area
 
 
         $output = '<div class="br-review">
-            <h3>Betyg '. $score .'</h3>
+            <h3>Betyg '. esc_attr($score) .'</h3>
             <div class="br-display-question">';
 
         foreach ($answers as $answer) {
@@ -36,7 +36,7 @@ class BR_public_display_result {            //TODO footer area
 
         $output.='</div>
             <div class="review-footer">
-                <p>Lämnad datum '.date_format($date, 'Y-m-d').'</p>
+                <p>Lämnad '.date_format($date, 'Y-m-d').'</p>
                 <a href="#">Anmäl till granskning</a>
             </div>
         </div>';
@@ -73,7 +73,10 @@ class BR_public_display_result {            //TODO footer area
         return $output;
 
     }
-
+    /**
+     * Returns the complete summary of object if minimum from setting is reached
+     * @return [string]
+     */
     function br_review_object_summary() {
         $sql = new BR_SQL_Quieries();
         $object_id = get_the_ID();
@@ -87,7 +90,7 @@ class BR_public_display_result {            //TODO footer area
             $all_questions = array_map('intval', explode(',', get_option('br_question_order'))); //all q:s that is in the form
 
             $output = '<div class="br-review">
-                <h3>Samlat betyg'. $total_score .'</h3><p>'. $no_of_reviews .' recensioner</p>
+                <h3>Samlat betyg'. esc_attr($total_score) .'</h3><p>'. $no_of_reviews .' recensioner</p>
                 <div class="br-display-question">';
                     foreach ($all_questions as $question) {
                         $output .= BR_public_display_result::summarize_question($question, $object_id);
@@ -106,9 +109,12 @@ class BR_public_display_result {            //TODO footer area
 
         return $output;
     }
-    //hämta alla svar per fråga
-    //räkna ut medel per fråga
-    //returnera ett htmlkod svar
+    /**
+     * Return output for every summarized question
+     * @param  [int] $question
+     * @param  [int] $object_id
+     * @return [string]
+     */
     static function summarize_question($question, $object_id) {
         $sql = new BR_SQL_Quieries();
         $display = new BR_result_answer_templates();
@@ -121,12 +127,13 @@ class BR_public_display_result {            //TODO footer area
         if($all_answers[0]['question_type_name'] === 'Benefits') {    //show benefit if all answers has it
 
         }
+
         if($all_answers[0]['question_type_name'] === 'Textfield') {    //display 3 random answers
 
             $i = 1;
             do {
                 $rand = rand(0, $no_of_answers-1);
-                $output .= '<p>'.$all_answers[$rand]['answer'] .'</p>';
+                $output .= '<p>'.esc_attr($all_answers[$rand]['answer']) .'</p>';
                 $i++;
             } while ($i <= 3);
         }
@@ -138,7 +145,6 @@ class BR_public_display_result {            //TODO footer area
                 $i += (int)$answer['answer'];
             }
             $sum = $i / $no_of_answers;
-            //$all_answers[0]['answer'] = $sum;
 
             $output .= '<p>Genomsnitt '. $sum .' av 5</p>';
         }
@@ -155,7 +161,7 @@ class BR_public_display_result {            //TODO footer area
                     }
                 }
                 $percentage = ($points / $no_of_answers) * 100;
-                $output .= '<p>'.$option['name'].' '.$percentage.'%</p>';
+                $output .= '<p>'.esc_attr($option['name']).' '.$percentage.'%</p>';
             }
         }
 
