@@ -144,6 +144,7 @@ class Buildable_reviews_admin {
 		$sql = new BR_SQL_Quieries();
 		$answers = $sql->get_review_answers($id);				//returns all questions with its answers by review_id
 		$total_score = 0;
+		$no = 0;												//counter for no of q:s with used answer
 
 		foreach ($answers as $answer) {
 			$score = 0;
@@ -152,6 +153,7 @@ class Buildable_reviews_admin {
 
 			//only count q:s with weight to them
 			if($answer_weight > 0) {
+				$no++;
 
 				if(is_numeric($answer['answer'])) {
 					$score = (int)$answer['answer'] * ($answer_weight/100);
@@ -171,10 +173,11 @@ class Buildable_reviews_admin {
 					 	$score = $total_answers / $total_options;
 					 }
 				}
-				$total_score = $total_score + $score;
+
+				$total_score += $score;
 			}
 		}
-
+		$total_score = $total_score / $no;
 		$total_score = round( $total_score, 1, PHP_ROUND_HALF_UP);
 		return $total_score;
 	}
