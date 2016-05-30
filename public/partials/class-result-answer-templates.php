@@ -22,7 +22,7 @@ class BR_result_answer_templates {
             $output .= $this->render_textfield($answer);
         }
 
-        else if($type === 'Scale' || $type == 'Radio') {
+        else if($type === 'Scale' || $type === 'Radio') {
 
             $output .= $this->render_radio($options, $answer);
         }
@@ -54,7 +54,7 @@ class BR_result_answer_templates {
     }
 
     public function render_radio($options, $answer) {
-        $output ='<div class="br-display-answer><p>'. esc_attr($answer['answer']) .'</p></div>';
+        $output ='<div class="br-display-answer"><p>'. esc_attr($answer['answer']) .'</p></div>';
 
         return $output;
     }
