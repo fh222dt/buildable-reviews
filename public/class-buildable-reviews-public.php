@@ -127,10 +127,14 @@ class Buildable_reviews_Public {
 				if(empty($answer)) {
 					unset($validated_answers[$question_id]);
 				}
+				//don't save email as answer
+				if(is_email($answer)) {
+					unset($validated_answers[$question_id]);
+				}
 			}
+			
 			//save if error is false
 			if($error == false) {
-				echo "yes!!!!!";
 				//set parameters
 				$user_id = Buildable_reviews_Public::check_user();	//if isset
 				$post_id = esc_attr($_POST['post_id']);				//if isset
