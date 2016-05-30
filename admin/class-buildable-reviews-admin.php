@@ -184,7 +184,7 @@ class Buildable_reviews_admin {
 	 * @param  [int] $id [the object to be scored]
 	 * @return [float]     [total score of object]
 	 */
- 	public function get_total_score_of_object($id) {
+ 	public static function get_total_score_of_object($id) {
 		//get all reviews of a specific object
 		$sql = new BR_SQL_Quieries();
 		$all_review_ids = $sql->get_all_review_ids($id);

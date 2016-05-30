@@ -164,6 +164,22 @@ class BR_Settings
         return $input;
     }
     public function br_sanitize_summarize_min($input) {
+        if(! is_numeric($input)) {
+            add_settings_error('br_summarize_min', 'br_summarize_min_error_num', 'Du kan bara ange siffror');
+            return $option;
+        }
+
+
+        if(array_sum($input) != 100) {
+            add_settings_error('br_question_algorithm', 'br_question_algorithm_error_sum', 'Summan av alla frågor måste vara 100 %');
+            return $option;
+        }
+
+        else {
+            return $input;
+        }
+
+
         return $input;
     }
 

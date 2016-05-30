@@ -75,6 +75,20 @@ class BR_SQL_Quieries {
         return $wpdb->get_results($sql, 'ARRAY_A');
     }
 
+    public static function get_all_answers_to_question($id, $post) {
+        global $wpdb;
+
+        $sql = 'SELECT A.answer_id, A.review_id, A.question_id, A.answer, T.question_type_name, R.posts_id, Q.question_name FROM ' .$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_ANSWER.' A
+        LEFT JOIN xpn4_br_review_question Q
+        ON A.question_id = Q.question_id
+        LEFT JOIN xpn4_br_review_question_type T
+        ON T.question_type_id = Q.type_id
+        LEFT JOIN xpn4_br_review R
+        ON A.review_id = R.review_id
+        WHERE A.question_id = '.$id.' AND R.posts_id = '.$post.';';
+
+        return $wpdb->get_results($sql, 'ARRAY_A');
+    }
     /**
      * Get all employers
      */
@@ -188,7 +202,9 @@ class BR_SQL_Quieries {
      public static function get_question_options($id) {
          global $wpdb;
 
-         $sql = 'SELECT * FROM ' .$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_OPTION_RELATION .'
+         $sql = 'SELECT R.question_id, R.option_id, O.option_name AS name FROM '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_OPTION_RELATION .' R
+         LEFT JOIN '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_OPTION .' O
+         ON R.option_id = O.option_id
          WHERE question_id = '.$id;
 
         $result = $wpdb->get_results( $sql, 'ARRAY_A' );

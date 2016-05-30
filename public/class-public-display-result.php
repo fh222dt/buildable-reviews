@@ -29,11 +29,9 @@ class BR_public_display_result {            //TODO footer area
             <h3>Betyg '. $score .'</h3>
             <div class="br-display-question">';
 
-        //print_r($answers);
-        //exit;
-
         foreach ($answers as $answer) {
             $output .= $display->render_answer($answer);
+
         }
 
         $output.='</div>
@@ -64,7 +62,7 @@ class BR_public_display_result {            //TODO footer area
         		$output .= BR_public_display_result::br_review_single($review['review_id']);
         	}
         }
-        else {
+        else {                //TODO link
             $output =
             '<div class="no-reviews-yet">
             <p>Det finns inga recensioer ännu. Jobbar du här eller har gjort? <a href="#">
@@ -77,59 +75,91 @@ class BR_public_display_result {            //TODO footer area
     }
 
     function br_review_object_summary() {
-            //endast om antal recensioner är över x(från en setting)
-            //räkna ut medel & välj 3 random för textsvar
+        $sql = new BR_SQL_Quieries();
         $object_id = get_the_ID();
-        $total_score =
-        $no_of_reviews=
-        $summarized_questions = BR_public_display_result::summarize_review($object_id);
+        $min_no_of_reviews = get_option('br_summarize_min');        //minimum from setting
+        $all_review_ids = $sql->get_all_review_ids($object_id);    //returns all reviews that has status = godkänd
 
-        $output = '<div class="br-review">
-            <h3>Samlat betyg'. $total_score .'</h3><p>'. $no_of_reviews .' antal recensioner</p>
-            <div class="br-display-question">';
-                foreach ($summarized_questions as $question) {
-                    $output .= '';//question template
-                }
+        if(count($all_review_ids) >= $min_no_of_reviews) {
+            $total_score = Buildable_reviews_admin::get_total_score_of_object($object_id);    //returns float
+            $no_of_reviews= count($all_review_ids);
+            //$summarized_questions = BR_public_display_result::summarize_question($object_id, $all_review_ids);
+            $all_questions = array_map('intval', explode(',', get_option('br_question_order'))); //all q:s that is in the form
 
-        $output .='</div>';
+            $output = '<div class="br-review">
+                <h3>Samlat betyg'. $total_score .'</h3><p>'. $no_of_reviews .' recensioner</p>
+                <div class="br-display-question">';
+                    foreach ($all_questions as $question) {
+                        $output .= BR_public_display_result::summarize_question($question, $object_id);
+                    }
+
+            $output .='</div>';
+        }
+        else {            //TODO link
+            $output = '<div class="no-reviews-yet">
+            <p>Det finns inte tillräckligt många recensioner för att en sammanställning ska kunna göras. <a href="#">
+                Du kan titta på alla lämna recensioner individuellt istället.</a></p>
+            </div>';
+        }
+
+
 
         return $output;
     }
-
-    static function summarize_review($object_id) {    //TODO endast om ett visst antal är inlämnat
-        //get all answers that belongs to a object
+    //hämta alla svar per fråga
+    //räkna ut medel per fråga
+    //returnera ett htmlkod svar
+    static function summarize_question($question, $object_id) {
         $sql = new BR_SQL_Quieries();
-        $review_ids = $sql->get_all_review_ids($object_id);    //returns array of review_ids
-        $all_answers = [];            //a_id, q_id, q_type_name, answer(kommer va alla möjliga typer)
-        foreach ($review_ids as $review) {
-            //get answers
-            $answers = $sql->get_review_answers($review);    //returns array of answers to the review id
-            foreach ($answers as $answer) {
-                //add to all_answers
-                $all_answers['answer_id'] = $answer['answer_id'];
-            }
+        $display = new BR_result_answer_templates();
+        $all_answers = $sql->get_all_answers_to_question($question, $object_id);
+
+        $output = '<h4>'. esc_attr($all_answers[0]['question_name']) .'</h4>';
+        $no_of_answers = count($all_answers);
+
+        //TODO benefits summary
+        if($all_answers[0]['question_type_name'] === 'Benefits') {    //show benefit if all answers has it
 
         }
-        //sortera svar efter q_id gör om arrayen så att varje fråga blir ett element o alla svar en array i den
+        if($all_answers[0]['question_type_name'] === 'Textfield') {    //display 3 random answers
 
-        foreach ($all_answers as $answer) {
+            $i = 1;
+            do {
+                $rand = rand(0, $no_of_answers-1);
+                $output .= '<p>'.$all_answers[$rand]['answer'] .'</p>';
+                $i++;
+            } while ($i <= 3);
+        }
 
-            if($all_answers['question_type_name'] === 'Benefits') {
-            //benefits
-            //hur många har kryssat varje ruta? antal eller %
+        if($all_answers[0]['question_type_name'] === 'Scale') {        //display average
+
+            $i = 0;
+            foreach ($all_answers as $answer) {
+                $i += (int)$answer['answer'];
             }
-            if($all_answers['question_type_name'] === 'Textfield') {
-            //samla ihop 3 random sv textfrågor
-            }
-            if($all_answers['question_type_name'] === 'Scale') {
-                //1-5 visa svar i medeltal (skala) tex 3.92
-            }
-            if($all_answers['question_type_name'] === 'Radio') {
-            //räkna ut %
+            $sum = $i / $no_of_answers;
+            //$all_answers[0]['answer'] = $sum;
+
+            $output .= '<p>Genomsnitt '. $sum .' av 5</p>';
+        }
+
+        if($all_answers[0]['question_type_name'] === 'Radio') {        //display each option with %
+
+            $all_options = $sql->get_question_options($question);
+
+            foreach  ($all_options as $option) {
+                $points = 0;
+                foreach ($all_answers as $answer) {
+                    if($answer['answer'] === $option['name']) {
+                        $points++;
+                    }
+                }
+                $percentage = ($points / $no_of_answers) * 100;
+                $output .= '<p>'.$option['name'].' '.$percentage.'%</p>';
             }
         }
 
-        return; //ett object som har alla svar i form av en sammanfattning
+        return $output;
     }
 
 }
