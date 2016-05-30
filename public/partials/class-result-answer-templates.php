@@ -1,9 +1,4 @@
 <?php
-//1-5 visa svar i medeltal (skala)
-
-//ja/nej varje svars-alt i % (envalsfråga)
-
-//förmåner % som kryssat för varje??
 class BR_result_answer_templates {
     public function render_answer($answer){
         $sql = new BR_SQL_Quieries();
@@ -35,14 +30,8 @@ class BR_result_answer_templates {
         return $output;
     }
 
-    public function render_checkbox($options, $question) {        //vet ej hur det ska se ut
+    public function render_checkbox($options, $question) {        //TODO behövs denna?
         $output ='';
-
-
-        // foreach ($options as $option) {
-        //
-        //
-        // }
 
         return $output;
     }
