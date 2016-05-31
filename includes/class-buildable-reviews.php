@@ -176,7 +176,7 @@ class Buildable_reviews {
 		$this->loader->add_action('admin_init', $settings_admin, 'br_init_settings');	//plugin settings page
 		$this->loader->add_action('admin_post_br_update_review', $plugin_admin, 'br_update_review'); //edit/update review from user
 		$this->loader->add_action('admin_post_br_add_new_question', $plugin_admin, 'br_add_new_question');
-		$this->loader->add_action('admin_post_br_update_question', $plugin_admin, 'br_update_question'); 
+		$this->loader->add_action('admin_post_br_update_question', $plugin_admin, 'br_update_question');
 
 	}
 
@@ -196,7 +196,6 @@ class Buildable_reviews {
 
 		$this->loader->add_action( 'init', $plugin_public, 'register_shortcodes' );		//all public shortcodes
 		$this->loader->add_action('init', $plugin_public, 'handle_submited_review'); //take care of submitted review from user
-
 	}
 
 	/**

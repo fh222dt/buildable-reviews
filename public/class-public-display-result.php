@@ -53,8 +53,6 @@ class BR_public_display_result {            //TODO footer area
         $object_id = get_the_ID();
         $all_review_ids = $sql->get_all_review_ids($object_id);    //returns all ids that has status = godkänd
 
-
-
         //TODO pagination
         $output = '';
         if(!empty($all_review_ids)) {
@@ -86,7 +84,6 @@ class BR_public_display_result {            //TODO footer area
         if(count($all_review_ids) >= $min_no_of_reviews) {
             $total_score = Buildable_reviews_admin::get_total_score_of_object($object_id);    //returns float
             $no_of_reviews= count($all_review_ids);
-            //$summarized_questions = BR_public_display_result::summarize_question($object_id, $all_review_ids);
             $all_questions = array_map('intval', explode(',', get_option('br_question_order'))); //all q:s that is in the form
 
             $output = '<div class="br-review">
@@ -105,8 +102,6 @@ class BR_public_display_result {            //TODO footer area
             </div>';
         }
 
-
-
         return $output;
     }
     /**
@@ -124,7 +119,6 @@ class BR_public_display_result {            //TODO footer area
         $output = '<h4>'. esc_attr($all_answers[0]['question_name']) .'</h4>';
 
         $no_of_answers = count($all_answers);
-
 
         if($all_answers[0]['question_type_name'] === 'Benefits') {    //shows benefit if all answers has it
             $display_form = new BR_public_display_form();

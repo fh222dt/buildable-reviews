@@ -132,7 +132,7 @@ class Buildable_reviews_Public {
 					unset($validated_answers[$question_id]);
 				}
 			}
-			
+
 			//save if error is false
 			if($error == false) {
 				//set parameters
@@ -224,6 +224,19 @@ class Buildable_reviews_Public {
 	}
 
 
+	public function bad_content($review_id) {
+
+		$id = (int)$review_id;
+
+		//update status in db
+		if(is_numeric($id)) {
+			$status = 3;	//status_id 3 "Anmäld"
+			$wpdb->update($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW, array('status_id' => $status),
+				array('review_id' => $id));
+		}
+
+	}
+
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
@@ -254,20 +267,9 @@ class Buildable_reviews_Public {
 	 */
 	public function enqueue_scripts() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in buildable_reviews_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The buildable_reviews_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
 
-		wp_enqueue_script( $this->buildable_reviews, plugin_dir_url( __FILE__ ) . 'js/buildable-reviews-public.js', array( 'jquery' ), $this->version, false );
-
+		wp_enqueue_script( $this->buildable_reviews, plugin_dir_url( __FILE__ ) . 'js/buildable-reviews-public.js', array( 'jquery' ), $this->version, true );
+		wp_enqueue_script( 'bootstrap-js', plugin_dir_url( __FILE__ ) . 'js/bootstrap.min.js', array( 'jquery' ), $this->version, true );
 	}
 
 }
