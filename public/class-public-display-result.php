@@ -25,7 +25,7 @@ class BR_public_display_result {            //TODO footer area
         $date = new DateTime($review[0]['created_at']);
 
 
-        $output = '<div class="br-review">
+        $output = '<div class="br-review '. $review_id .'">
             <h3>Betyg '. esc_attr($score) .'</h3>
             <div class="br-display-question">';
 
@@ -37,7 +37,7 @@ class BR_public_display_result {            //TODO footer area
         $output.='</div>
             <div class="review-footer">
                 <p>Lämnad '.date_format($date, 'Y-m-d').'</p>
-                <a href="#">Anmäl till granskning</a>
+                <a href="#br-bad-review" data-toggle="modal">Anmäl för granskning</a>
             </div>
         </div>';
 
@@ -118,14 +118,41 @@ class BR_public_display_result {            //TODO footer area
     static function summarize_question($question, $object_id) {
         $sql = new BR_SQL_Quieries();
         $display = new BR_result_answer_templates();
+
         $all_answers = $sql->get_all_answers_to_question($question, $object_id);
 
         $output = '<h4>'. esc_attr($all_answers[0]['question_name']) .'</h4>';
+
         $no_of_answers = count($all_answers);
 
-        //TODO benefits summary
-        if($all_answers[0]['question_type_name'] === 'Benefits') {    //show benefit if all answers has it
 
+        if($all_answers[0]['question_type_name'] === 'Benefits') {    //shows benefit if all answers has it
+            $display_form = new BR_public_display_form();
+
+            //add each benefit from answers to one array
+            $answered_benefits =[];
+            foreach ($all_answers as $answer) {
+                $answer = explode(', ', $answer['answer']);
+                $answered_benefits = array_merge($answered_benefits, $answer);
+
+            }
+            //all benefits from database
+            $all_benefits = $display_form->do_benefits();        //benefits => id, name, category
+            //var for faking answer
+            $sum_answer = '';
+
+            //if all answers has checked a benefit, it is considered as a 'offered benefit'
+            $counted = array_count_values($answered_benefits);
+            foreach ($all_benefits as $benefit) {
+                $term_id = 'term_id '.$benefit['id'];
+
+                if($counted[$term_id] == $no_of_answers) {
+                     $sum_answer .= $term_id.', ';    //faking a answer-string
+                }
+            }
+            $render['answer'] = $sum_answer;    //faking a answer array
+
+            $output .= $display->render_benefits($render);
         }
 
         if($all_answers[0]['question_type_name'] === 'Textfield') {    //display 3 random answers
