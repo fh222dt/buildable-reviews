@@ -196,6 +196,9 @@ class Buildable_reviews {
 
 		$this->loader->add_action( 'init', $plugin_public, 'register_shortcodes' );		//all public shortcodes
 		$this->loader->add_action('init', $plugin_public, 'handle_submited_review'); //take care of submitted review from user
+
+		$this->loader->add_action( 'wp_ajax_report_content', $plugin_public , 'report_content' );
+		$this->loader->add_action( 'wp_ajax_nopriv_report_content', $plugin_public , 'report_content' );
 	}
 
 	/**

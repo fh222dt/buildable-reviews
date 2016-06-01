@@ -25,7 +25,7 @@ class BR_public_display_result {            //TODO footer area
         $date = new DateTime($review[0]['created_at']);
 
 
-        $output = '<div class="br-review '. $review_id .'">
+        $output = '<div class="br-review" data-review="'. $review_id .'">
             <h3>Betyg '. esc_attr($score) .'</h3>
             <div class="br-display-question">';
 
@@ -37,7 +37,7 @@ class BR_public_display_result {            //TODO footer area
         $output.='</div>
             <div class="review-footer">
                 <p>Lämnad '.date_format($date, 'Y-m-d').'</p>
-                <a href="#br-bad-review" data-toggle="modal">Anmäl för granskning</a>
+                <a class="br-report-review" href="#">Anmäl för granskning</a>
             </div>
         </div>';
 

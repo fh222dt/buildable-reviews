@@ -223,13 +223,14 @@ class Buildable_reviews_Public {
 		}
 	}
 
-
-	public function bad_content($review_id) {
-
-		$id = (int)$review_id;
-
+	public function report_content() {
+		//ajax from modal report bad content
+		if(isset($_POST['report_content'])) {
+			$id = (int)$_POST['report_content'];
+		}
 		//update status in db
 		if(is_numeric($id)) {
+			global $wpdb;
 			$status = 3;	//status_id 3 "Anmäld"
 			$wpdb->update($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW, array('status_id' => $status),
 				array('review_id' => $id));
@@ -269,6 +270,8 @@ class Buildable_reviews_Public {
 
 
 		wp_enqueue_script( $this->buildable_reviews, plugin_dir_url( __FILE__ ) . 'js/buildable-reviews-public.js', array( 'jquery' ), $this->version, true );
+		wp_localize_script($this->buildable_reviews, 'buildableReviews', array('ajax_url'=> admin_url('admin-ajax.php')));
+
 		wp_enqueue_script( 'bootstrap-js', plugin_dir_url( __FILE__ ) . 'js/bootstrap.min.js', array( 'jquery' ), $this->version, true );
 	}
 
