@@ -134,7 +134,7 @@ class BR_Settings
      * If not returning, saving is performed anyway
      */
     public function br_sanitize_standard_status($input) {
-        //TODO kolla av att det är nåt av värdena i db?
+
         return $input;
     }
 
@@ -160,7 +160,7 @@ class BR_Settings
     }
 
     public function br_sanitize_question_order($input) {
-        //TODO kolla av att det är nåt av värdena i db?
+        
         return $input;
     }
     public function br_sanitize_summarize_min($input) {

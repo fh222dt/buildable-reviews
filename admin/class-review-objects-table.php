@@ -65,7 +65,7 @@ class BR_review_objects_table extends WP_List_Table {
                     echo $employer_link;
                     break;
 
-            case 'rating':             //TODO
+            case 'rating':
 					$id = $item['employer_id'];
 					$score = Buildable_reviews_admin::get_total_score_of_object($id);
                     echo $score.' av 5';

@@ -15,7 +15,7 @@ if(isset($_GET['review-id'])) {
     $review =$result[0];
 }
 
-else {                        //TODO: fånga om det är ett id som inte finns
+else {
     echo '<p>Invalid review id</p>';
     die;
 }

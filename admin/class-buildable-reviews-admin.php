@@ -237,7 +237,7 @@ class Buildable_reviews_admin {
 	                $answer['answer'] = sanitize_text_field($_POST['answer-id-'. $answer['answer_id']]);
 
 	                $wpdb->update($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_ANSWER, array('answer' => $answer['answer']),
-	                array('answer_id' => $answer['answer_id']));         //TODO: kankse ange datatyper?
+	                array('answer_id' => $answer['answer_id']));
 	            }
 	        }
 			//update status in db

@@ -167,8 +167,6 @@ class Buildable_reviews_Activator {
 		)ENGINE=InnoDB AUTO_INCREMENT=1;';
 		dbDelta($sql_review_question_answer_table);
 
-		//TODO: lägga till främmande nycklar för answers
-
 		//Set up REVIEW table
 		$sql_review_table = 'CREATE TABLE '. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW . ' (
 			review_id bigint(20) NOT NULL AUTO_INCREMENT,
@@ -201,8 +199,5 @@ class Buildable_reviews_Activator {
 
 		$editor_role->add_cap('br_edit_reviews');
 		$admin_role->add_cap('br_edit_reviews');
-
-
-		//TODO sample review???
 	}
 }

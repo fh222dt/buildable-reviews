@@ -76,7 +76,7 @@ class BR_reviews_table extends WP_List_Table {
                     echo $item['created_at'];
                     break;
 
-            case 'status_name':             //TODO: onclick change status
+            case 'status_name':
                     echo $item['status_name'];
                     break;
 
@@ -107,7 +107,7 @@ class BR_reviews_table extends WP_List_Table {
 	  $sortable_columns = array(
 	    'review_id' => array( 'review_id', true ),
 	    'employer' => array( 'employer', false ),
-		//'rating' => array( 'rating', false ), 	//TODO
+		//'rating' => array( 'rating', false ), 	//TODO sort by rating
 		'created_at' => array( 'created_at', false ),
         'status_name' => array( 'status_name', false ),
         'user' => array( 'user', false )

@@ -7,7 +7,7 @@
  //include_once( ABSPATH . 'wp-content/plugins/buildable-reviews/admin/sql-quieries.php' );
  //$sql = new BR_SQL_Quieries();
 
- if(isset($_GET['by-user'])) {        //TODO: do i need post??
+ if(isset($_GET['by-user'])) {
      $list_by = $_GET['by-user'];
      $where = 'WHERE R.user_id = '.$list_by.' ';
      $header = 'Alla recensioner per användare';
@@ -18,7 +18,7 @@
      $header = 'Alla recensioner per arbetsgivare';
 
  }
- else {                        //TODO: fånga om det är ett id som inte finns
+ else {
      echo '<p>Invalid review id</p>';
      die;
  }

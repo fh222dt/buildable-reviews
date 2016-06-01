@@ -58,7 +58,7 @@ class Buildable_reviews_Public {
 		require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/public/class-public-display-form.php' );
 		require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/public/class-public-display-result.php' );
 		add_shortcode('br-review-form', array('BR_public_display_form', 'br_review_form'));
-		add_shortcode('br-review-result-all', array('BR_public_display_result', 'br_review_object_list'));			//TODO arg id
+		add_shortcode('br-review-result-all', array('BR_public_display_result', 'br_review_object_list'));
 		add_shortcode('br-review-result-summary', array('BR_public_display_result', 'br_review_object_summary'));
 
 	}
@@ -91,7 +91,6 @@ class Buildable_reviews_Public {
 					$required_question = Buildable_reviews_Public::is_required_question($question_id);
 					if($required_question == true || $question_id == 'email') {
 						if(empty($answer)) {
-							//TODO skicka inte form
 							$error = true;
 
 							//add error message

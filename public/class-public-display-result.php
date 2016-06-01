@@ -7,7 +7,7 @@ require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/admin/sql-quieries
 require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/admin/class-buildable-reviews-admin.php' );
 require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/public/partials/class-result-answer-templates.php' );
 
-class BR_public_display_result {            //TODO footer area
+class BR_public_display_result {
     /**
      * Returns output for one review
      * @param  int $review_id
