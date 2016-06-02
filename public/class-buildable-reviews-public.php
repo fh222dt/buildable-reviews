@@ -128,6 +128,7 @@ class Buildable_reviews_Public {
 				}
 				//don't save email as answer
 				if(is_email($answer)) {
+					$email = $answer; 	//email user on submission
 					unset($validated_answers[$question_id]);
 				}
 			}
@@ -156,13 +157,19 @@ class Buildable_reviews_Public {
 
 				unset($_SESSION['br_form_error']);
 
-				//TODO:ge inlämningsbesked, disable form,
 				// Email the user
-				//wp_mail( $email_address, 'Welcome!', 'Your Password: ' . $password );
+				$subject = 'Tack för din recension';
+				$review_object = get_the_title($post_id);
+				$message = 'Tack för din recension av '. esc_attr($review_object) .'! Vi kommer kontrollera dina lämnade uppgifter och därefter publicer din recension snart.';
+				$headers = 'From: Workers Talk <noreply@workerstalk.se>';
+
+				wp_mail( $email, $subject, $message, $headers);
 
 			}
 		}
 	}
+
+
 	/**
 	 *
 	 * @param  int  $id
