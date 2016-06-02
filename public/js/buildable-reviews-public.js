@@ -5,13 +5,20 @@
 		//toggle buttons for review, results, summary
 		$('#br-review-button').click(function(e) {
 			e.preventDefault();
+			$('#review-summary').hide('slow');
+			$('#list-all-reviews').hide('slow');
+
 			$('#review-form').toggle('slow', function() {
+
 
 			});
 		});
 
 		$('#br-view-all-button').click(function(e) {
 			e.preventDefault();
+			$('#review-form').hide('slow');
+			$('#review-summary').hide('slow');
+
 			$('#list-all-reviews').toggle('slow', function() {
 
 			});
@@ -19,6 +26,9 @@
 
 		$('#br-summary-button').click(function(e) {
 			e.preventDefault();
+			$('#review-form').hide('slow');
+			$('#list-all-reviews').hide('slow');
+
 			$('#review-summary').toggle('slow', function() {
 
 			});
