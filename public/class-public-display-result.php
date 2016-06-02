@@ -44,7 +44,7 @@ class BR_public_display_result {
         return $output;
     }
     /**
-     * Returns a list of each individual review of an object
+     * Returns a list with all individual reviews of an object
      * @param  [int] $object_id
      * @return [string]
      */
@@ -53,12 +53,12 @@ class BR_public_display_result {
         $object_id = get_the_ID();
         $all_review_ids = $sql->get_all_review_ids($object_id);    //returns all ids that has status = godkänd
 
-        //TODO pagination
         $output = '';
         if(!empty($all_review_ids)) {
             foreach ($all_review_ids as $review) {
         		$output .= BR_public_display_result::br_review_single($review['review_id']);
         	}
+            $output .= '<div id="results-pagination"></div>';
         }
         else {                //TODO link
             $output =
