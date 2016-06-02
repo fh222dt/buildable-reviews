@@ -39,7 +39,7 @@ class BR_public_display_form {
         }
 
         $form = '<h2>Lämna din recension</h2>
-                <form method="post" action="">';
+                <form id="br-review-form" method="post" action="">';
 
         //sort questions based on setting
         $order_from_setting = array_map('intval', explode(',', get_option('br_question_order'))); //from string to array
@@ -61,6 +61,7 @@ class BR_public_display_form {
         $form .= $output;
         $form .= '<input type="hidden" name="action" value="br_submit_review" />
                 <input type="hidden" name="post_id" value="'. get_the_ID().'" />
+                <input type="checkbox" name="policy" value="policy" required/><label>Jag godkänner villkoren</label>
                 <input value="Lämna recension" type="submit" />
                 </form>';
         return $form;

@@ -85,7 +85,7 @@ class Buildable_reviews_Public {
 			//validate all answers
 			foreach ($_POST as $question_id => $answer) {
 				//remove all non question answers from POST by only store POST-keys with question_id:s
-				if(is_numeric($question_id) || $question_id == 'email') {
+				if(is_numeric($question_id) || $question_id == 'email') {	//email??
 
 					//required q can't be empty
 					$required_question = Buildable_reviews_Public::is_required_question($question_id);
@@ -157,6 +157,8 @@ class Buildable_reviews_Public {
 				unset($_SESSION['br_form_error']);
 
 				//TODO:ge inlämningsbesked, disable form,
+				// Email the user
+				//wp_mail( $email_address, 'Welcome!', 'Your Password: ' . $password );
 
 			}
 		}
@@ -210,8 +212,6 @@ class Buildable_reviews_Public {
 			$user = new WP_User($user_id);
 			$user->set_role('contributor');
 
-			// Email the user 		TODO
-			//wp_mail( $email_address, 'Welcome!', 'Your Password: ' . $password );
 
 			return $user_id;
 		}
@@ -271,7 +271,11 @@ class Buildable_reviews_Public {
 		wp_enqueue_script( $this->buildable_reviews, plugin_dir_url( __FILE__ ) . 'js/buildable-reviews-public.js', array( 'jquery' ), $this->version, true );
 		wp_localize_script($this->buildable_reviews, 'buildableReviews', array('ajax_url'=> admin_url('admin-ajax.php')));
 
-		wp_enqueue_script( 'bootstrap-js', plugin_dir_url( __FILE__ ) . 'js/bootstrap.min.js', array( 'jquery' ), $this->version, true );
+		wp_enqueue_script( 'bootstrap_js', plugin_dir_url( __FILE__ ) . 'js/bootstrap.min.js', array( 'jquery' ), $this->version, true );
+		wp_enqueue_script( 'validation', 'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js', array('jquery'), 1.15, true);
+		wp_enqueue_script( 'validation_msg_sv', 'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/localization/messages_sv.js', array('jquery'), 1.15, true);
+		wp_enqueue_script( 'buildable_reviews_form', plugin_dir_url( __FILE__ ) . 'js/buildable-reviews-form.js', array( 'jquery' ), $this->version, true );
+
 	}
 
 }
