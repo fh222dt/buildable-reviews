@@ -9,11 +9,12 @@ require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/admin/sql-quieries
 class BR_public_display_form {
 
     public function br_review_form() {
-        // if(!is_user_logged_in()){
-        //
-        //     return '<p>Du måste vara inloggad för att kunna lämna en recension</p>';
-        // }
-        //
+        if(isset($_POST['br-review-submit'])) {
+
+            $output = '<h2>Tack</h2><p>Tack för din recension! Efter kontroll kommer vi snart att publicera den.</p>';
+            return $output;
+        }
+
         $question_templates = new BR_form_question_templates();
         $sql = new BR_SQL_Quieries();
         $usable_questions = $sql->get_all_questions();                      //question_id, question_name, question_desc, question_type_name
@@ -59,10 +60,10 @@ class BR_public_display_form {
 
         //finish the form
         $form .= $output;
-        $form .= '<input type="hidden" name="action" value="br_submit_review" />
-                <input type="hidden" name="post_id" value="'. get_the_ID().'" />
-                <input type="checkbox" name="policy" value="policy" required/><label>Jag godkänner villkoren</label>
-                <input value="Lämna recension" type="submit" />
+        $form .= '<input type="checkbox" name="policy" value="policy" required/><label>Jag godkänner villkoren</label>
+                <input type="hidden" name="action" value="br_submit_review">
+                <input type="hidden" name="post_id" value="'. get_the_ID().'">
+                <input name="br-review-submit" value="Lämna recension" type="submit">
                 </form>';
         return $form;
     }

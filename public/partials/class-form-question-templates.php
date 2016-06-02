@@ -6,8 +6,8 @@ class BR_form_question_templates {
 
                                                         //TODO: lägg till css-classer, remove inline style
         $output = '<div class="br-question">
-                    <h6>'. esc_attr($question['question_name']) .'</h6>'
-                         .($question['required'] == true ? '<span class="req_q" style="color: red;">Obligatorisk</span>' : '');
+                    <h6>'. esc_attr($question['question_name']) .'</h6>';
+                         //.($question['required'] == true ? '<span class="req_q" style="color: red;">Obligatorisk</span>' : '');
 
         //add error messages thrue session
         if (isset($_SESSION['br_form_error']) ) {

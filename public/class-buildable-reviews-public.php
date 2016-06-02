@@ -128,7 +128,7 @@ class Buildable_reviews_Public {
 				}
 				//don't save email as answer
 				if(is_email($answer)) {
-					$email = $answer; 	//email user on submission
+					$email = $answer; 	//send email to user on submission & check user by email
 					unset($validated_answers[$question_id]);
 				}
 			}
@@ -136,35 +136,38 @@ class Buildable_reviews_Public {
 			//save if error is false
 			if($error == false) {
 				//set parameters
-				$user_id = Buildable_reviews_Public::check_user();	//if isset
+				$user_id = Buildable_reviews_Public::check_user($email);	//if isset
 				$post_id = esc_attr($_POST['post_id']);				//if isset
 				$status_id = get_option('br_standard_status'); //returns status_id from plugin settings
 				$now = date("Y-m-d H:i:s");
 
-				//saves review to db
-				$wpdb->insert($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW,
-					array('user_id' => $user_id, 'posts_id' => $post_id, 'status_id' => $status_id, 'created_at' => $now),
-					array('%d', '%d', '%d', '%s'));
+				if(is_numeric($user_id) && is_numeric($post_id)) {
+					//saves review to db
+					$wpdb->insert($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW,
+						array('user_id' => $user_id, 'posts_id' => $post_id, 'status_id' => $status_id, 'created_at' => $now),
+						array('%d', '%d', '%d', '%s'));
 
-				//saves answers to db
-				$review_id = (int)$wpdb->insert_id;
+					//saves answers to db
+					$review_id = (int)$wpdb->insert_id;
 
-				foreach ($validated_answers as $q => $a) {
-					$wpdb->insert($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_ANSWER,
-						array('review_id' => $review_id, 'question_id' => $q, 'answer' => $a),
-						array('%d', '%d', '%s'));
+					foreach ($validated_answers as $q => $a) {
+						$wpdb->insert($wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_ANSWER,
+							array('review_id' => $review_id, 'question_id' => $q, 'answer' => $a),
+							array('%d', '%d', '%s'));
+					}
+
+					unset($_SESSION['br_form_error']);
+
+					// Email the user
+					$subject = 'Tack för din recension';
+					$review_object = get_the_title($post_id);
+					$message = 'Tack för din recension av '. esc_attr($review_object) .'! Vi kommer kontrollera dina lämnade uppgifter och därefter publicer din recension snart.';
+					$headers = 'From: Workers Talk <noreply@workerstalk.se>';
+
+					wp_mail( $email, $subject, $message, $headers);
 				}
 
-				unset($_SESSION['br_form_error']);
-
-				// Email the user
-				$subject = 'Tack för din recension';
-				$review_object = get_the_title($post_id);
-				$message = 'Tack för din recension av '. esc_attr($review_object) .'! Vi kommer kontrollera dina lämnade uppgifter och därefter publicer din recension snart.';
-				$headers = 'From: Workers Talk <noreply@workerstalk.se>';
-
-				wp_mail( $email, $subject, $message, $headers);
-
+				exit();
 			}
 		}
 	}
@@ -186,47 +189,51 @@ class Buildable_reviews_Public {
 
 	/**
 	 * Checks if user already exists in db, or creates new user from email
-	 * @param  [string] $email
+	 *
 	 * @return [int]|[string] user_id or validation error
 	 */
-	public static function check_user() {
+	public static function check_user($email) {
+
+		$current_user = wp_get_current_user();
 
 
 		if($current_user->ID != 0) {			//user is logged in
-			$current_user = wp_get_current_user();
+
 			$user_id = $current_user->ID;
 		}
 		else {									//new user or not logged in
-			if (isset($_POST[7])) {		//TODO
-				$email = esc_attr($_POST[7]);
+			//if (isset($_POST[7])) {		//TODO
+				//$email = esc_attr($_POST[7]);
+			//}
+
+
+			//validate email
+			if (is_email($email)) {
+				$safe_email = sanitize_email($email);
+			}
+			else {
+				return "Ogiltig epost";
+			}
+
+			if(email_exists($safe_email) === false) {		//new user is created
+				// Generate the password and create the user
+				$password = wp_generate_password(12, false);
+				$user_id = wp_create_user($safe_email, $password, $safe_email);
+
+				// Set the role
+				$user = new WP_User($user_id);
+				$user->set_role('contributor');
+
+
+				//return $user_id;
+			}
+			else {				//email exists in db
+				$user_id = email_exists($safe_email);
+
+				//return $user_id;
 			}
 		}
-
-		//validate email
-		if (is_email($email)) {
-			$safe_email = sanitize_email($email);
-		}
-		else {
-			return "Ogiltig epost";
-		}
-
-		if(email_exists($safe_email) === false) {		//new user is created
-			// Generate the password and create the user
-			$password = wp_generate_password(12, false);
-			$user_id = wp_create_user($safe_email, $password, $safe_email);
-
-			// Set the role
-			$user = new WP_User($user_id);
-			$user->set_role('contributor');
-
-
-			return $user_id;
-		}
-		else {				//email exists in db
-			$user_id = email_exists($safe_email);
-
-			return $user_id;
-		}
+		return $user_id;
 	}
 
 	public function report_content() {
