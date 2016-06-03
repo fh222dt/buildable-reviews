@@ -202,6 +202,10 @@ class Buildable_reviews_admin {
 
 		$no_of_review = count($all_review_ids);
 
+		if($total_score == 0) {
+			return $total_score;
+		}
+
 		$total_score = $total_score / $no_of_review;
 
 		$total_score = round( $total_score, 1, PHP_ROUND_HALF_UP);

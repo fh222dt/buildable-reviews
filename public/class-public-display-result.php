@@ -63,7 +63,7 @@ class BR_public_display_result {
         else {                //TODO link
             $output =
             '<div class="no-reviews-yet">
-            <p>Det finns inga recensioer ännu. Jobbar du här eller har gjort? <a href="#">
+            <p>Det finns inga recensioer ännu. Jobbar du här eller har gjort? <a href="#review-form">
                 Lämna en recension så andra kan läsa om den här arbetsgivaren</a></p>
             </div>';
         }
@@ -86,7 +86,7 @@ class BR_public_display_result {
             $no_of_reviews= count($all_review_ids);
             $all_questions = array_map('intval', explode(',', get_option('br_question_order'))); //all q:s that is in the form
 
-            $output = '<div class="br-review">
+            $output = '<div class="br-review-summary">
                 <h3>Samlat betyg'. esc_attr($total_score) .'</h3><p>'. $no_of_reviews .' recensioner</p>
                 <div class="br-display-question">';
                     foreach ($all_questions as $question) {

@@ -63,6 +63,11 @@ class Buildable_reviews_Public {
 
 	}
 
+	public function register_widgets() {
+		require_once( ABSPATH . 'wp-content/plugins/buildable-reviews/public/class-public-widgets.php' );
+		register_widget('BR_widgets');
+	}
+
 	public function handle_submited_review() {
 		global $wpdb;
 		session_start();

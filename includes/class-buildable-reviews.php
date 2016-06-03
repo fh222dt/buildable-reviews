@@ -204,6 +204,10 @@ class Buildable_reviews {
 		//ajax submit review form
 		$this->loader->add_action( 'wp_ajax_br_submit_review', $plugin_public , 'handle_submited_review' );
 		$this->loader->add_action( 'wp_ajax_nopriv_br_submit_review', $plugin_public , 'handle_submited_review' );
+
+		//widget
+		$this->loader->add_action( 'widgets_init', $plugin_public , 'register_widgets');
+		
 	}
 
 	/**
