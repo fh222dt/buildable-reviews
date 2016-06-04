@@ -100,7 +100,7 @@ class BR_widgets extends WP_Widget {
             for ($i=0; $i < 5; $i++) {
                 $title = '<a href="'. get_permalink($unique_objects[$i]['posts_id']) .'">'. get_the_title($unique_objects[$i]['posts_id']) .'</a>';
 
-                $output.= '<div><p>'. $title .'</p><p>'.$unique_objects[$i]['score'].'</p></div>';
+                $output.= '<div>'. $title .'<span class="score-icons" data-score='. $unique_objects[$i]['score'] .'></span></div>';
             }
         }
 
@@ -126,7 +126,7 @@ class BR_widgets extends WP_Widget {
             for ($i=0; $i < 5; $i++) {
                 $title = '<a href="'. get_permalink($newest_objects[$i]['posts_id']) .'">'. get_the_title($newest_objects[$i]['posts_id']) .'</a>';
 
-                $output.= '<div><p>'. $title .'</p></div>';
+                $output.= '<div>'. $title .'</div>';
             }
 
         }

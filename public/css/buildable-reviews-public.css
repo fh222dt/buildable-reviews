@@ -11,3 +11,26 @@
 .br-review-summary {
     column-count: 2;
 }
+
+
+/*Benefits result*/
+
+.benefits-category{
+    font-weight: bold;
+}
+
+.br-display-answer .bold {
+    color: #7ECB1D;
+    font-weight: normal;
+}
+
+.br-display-answer .grey {
+    color: #E5E5E5;
+    font-weight: lighter;
+}
+
+/*Score in form of icons (stars)*/
+.score-icons {
+    color: #7ed6cb;
+    margin-left: 5px;
+}

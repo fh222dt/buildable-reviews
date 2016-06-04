@@ -2,6 +2,7 @@
 	'use strict';
 
 	$( window ).load(function() {
+
 		//toggle buttons for review, results, summary
 		$('#br-review-button').click(function(e) {
 			e.preventDefault();
@@ -46,7 +47,7 @@
 
 		//confirm modal reporting bad content
 		$('#br-confirm-report-review').click(function(e) {
-			var $this = $(this);
+
 
 			$.ajax({
 				url: buildableReviews.ajax_url,
@@ -98,6 +99,22 @@
 	                     .slice(start, end).show();
 	        }
 	    });
+
+		//Populate score with icons
+		$('.score-icons').each(function(){
+			var score = $(this).data('score');
+			var whole_icon = Math.floor(score);
+			var half_icon = (whole_icon < score);
+
+			//show the icons
+			for (var icon = 1; icon <=whole_icon; icon++) {
+				$(this).append('<i class="fa fa-star"></i>');
+			}
+			//and the half icon
+			if(half_icon) {
+				$(this).append('<i class="fa fa-star-half"></i>');
+			}
+		});
 
 
 

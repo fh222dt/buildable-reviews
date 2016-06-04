@@ -178,7 +178,8 @@ class Buildable_reviews_admin {
 			}
 		}
 		$total_score = $total_score / $no;
-		$total_score = round( $total_score, 1, PHP_ROUND_HALF_UP);
+		$total_score = round($total_score * 2) / 2;			//always round to nearest 0,5
+		
 		return $total_score;
 	}
 
@@ -208,7 +209,7 @@ class Buildable_reviews_admin {
 
 		$total_score = $total_score / $no_of_review;
 
-		$total_score = round( $total_score, 1, PHP_ROUND_HALF_UP);
+		$total_score = round($total_score * 2) / 2;		//always round to nearest 0,5
 
 		return $total_score;
 	}

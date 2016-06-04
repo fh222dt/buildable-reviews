@@ -296,6 +296,7 @@ class Buildable_reviews_Public {
 		wp_enqueue_script( 'validation_msg_sv', 'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/localization/messages_sv.js', array('jquery'), 1.15, true);
 		wp_enqueue_script( 'buildable_reviews_form', plugin_dir_url( __FILE__ ) . 'js/buildable-reviews-form.js', array( 'jquery' ), $this->version, true );
 		wp_enqueue_script( 'simple_pagination', plugin_dir_url( __FILE__ ) . 'js/jquery.simplePagination.js', array( 'jquery' ), $this->version, true );
+		wp_enqueue_script( 'font_awesome', 'https://use.fontawesome.com/5ea8826258.js', array( 'jquery' ), $this->version, true );
 
 
 	}

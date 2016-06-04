@@ -26,7 +26,7 @@ class BR_public_display_result {
 
 
         $output = '<div class="br-review" data-review="'. $review_id .'">
-            <h3>Betyg '. esc_attr($score) .'</h3>
+            <h3>Betyg <span class="score-icons" data-score='. $score .'></span></h3>
             <div class="br-display-question">';
 
         foreach ($answers as $answer) {
@@ -87,7 +87,7 @@ class BR_public_display_result {
             $all_questions = array_map('intval', explode(',', get_option('br_question_order'))); //all q:s that is in the form
 
             $output = '<div class="br-review-summary">
-                <h3>Samlat betyg'. esc_attr($total_score) .'</h3><p>'. $no_of_reviews .' recensioner</p>
+                <h3>Samlat betyg<span class="score-icons" data-score='. $total_score .'></span></h3><p>'. $no_of_reviews .' recensioner</p>
                 <div class="br-display-question">';
                     foreach ($all_questions as $question) {
                         $output .= BR_public_display_result::summarize_question($question, $object_id);
@@ -121,6 +121,8 @@ class BR_public_display_result {
         $no_of_answers = count($all_answers);
 
         if($all_answers[0]['question_type_name'] === 'Benefits') {    //shows benefit if all answers has it
+            $output .= '<p>Visar förmåner som alla svarande erbjuds</p>';
+
             $display_form = new BR_public_display_form();
 
             //add each benefit from answers to one array
