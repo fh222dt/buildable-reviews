@@ -133,6 +133,7 @@ class BR_reviews_list_table extends WP_List_Table {
 	  $current_page = $this->get_pagenum();
 	  $total_items  = $this->sql->record_count();
 
+
 	  $this->set_pagination_args( [
 	    'total_items' => $total_items, //WE have to calculate the total number of items
 	    'per_page'    => $per_page //WE have to determine how many items to show on a page

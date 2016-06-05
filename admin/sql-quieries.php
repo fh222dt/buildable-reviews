@@ -55,10 +55,24 @@ class BR_SQL_Quieries {
     public static function record_count() {
       global $wpdb;
 
-      $sql = 'SELECT COUNT(*) FROM' .$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW;
+      $sql = 'SELECT COUNT(*) FROM ' .$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW;
 
       return $wpdb->get_var( $sql );
     }
+
+    /**
+     * Returns the count of records in the database.
+     *
+     * @return null|string
+     */
+    public static function record_count_objects() {
+      global $wpdb;
+
+      $sql = 'SELECT COUNT(DISTINCT posts_id) FROM ' .$wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW;
+
+      return $wpdb->get_var( $sql );
+    }
+
     /**
      * Returns all questions with its answers by review_id
      */

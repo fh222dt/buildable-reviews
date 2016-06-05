@@ -105,7 +105,7 @@ class Buildable_reviews_Activator {
  		$wpdb->query($fq2_review_question_option_table);
 
 		//unique index to avoid dups (using ignore at insert)
-		$index_review_question_option_table = 'ALTER TABLE ' .. $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_OPTION_RELATION . '
+		$index_review_question_option_table = 'ALTER TABLE ' . $wpdb->prefix . Buildable_reviews::TABLE_NAME_REVIEW_QUESTION_OPTION_RELATION . '
 			ADD UNIQUE INDEX(question_id, option_id)';
 		$wpdb->query($index_review_question_option_table);
 
