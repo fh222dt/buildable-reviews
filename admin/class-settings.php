@@ -160,7 +160,7 @@ class BR_Settings
     }
 
     public function br_sanitize_question_order($input) {
-        
+
         return $input;
     }
     public function br_sanitize_summarize_min($input) {
@@ -170,10 +170,10 @@ class BR_Settings
         }
 
 
-        if(array_sum($input) != 100) {
-            add_settings_error('br_question_algorithm', 'br_question_algorithm_error_sum', 'Summan av alla frågor måste vara 100 %');
-            return $option;
-        }
+        // if(array_sum($input) != 100) {
+        //     add_settings_error('br_question_algorithm', 'br_question_algorithm_error_sum', 'Summan av alla frågor måste vara 100 %');
+        //     return $option;
+        // }
 
         else {
             return $input;

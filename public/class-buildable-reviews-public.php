@@ -277,6 +277,7 @@ class Buildable_reviews_Public {
 
 		wp_enqueue_style( $this->buildable_reviews, plugin_dir_url( __FILE__ ) . 'css/buildable-reviews-public.css', array(), $this->version, 'all' );
 		wp_enqueue_style( 'simple_pagination', plugin_dir_url( __FILE__ ) . 'css/simplePagination.css', array(), $this->version, 'all' );
+		wp_enqueue_style( 'jquery-ui', plugin_dir_url( __FILE__ ) . 'css/jquery-ui.min.css', array(), 'all' );
 
 	}
 
@@ -297,6 +298,7 @@ class Buildable_reviews_Public {
 		wp_enqueue_script( 'buildable_reviews_form', plugin_dir_url( __FILE__ ) . 'js/buildable-reviews-form.js', array( 'jquery' ), $this->version, true );
 		wp_enqueue_script( 'simple_pagination', plugin_dir_url( __FILE__ ) . 'js/jquery.simplePagination.js', array( 'jquery' ), $this->version, true );
 		wp_enqueue_script( 'font_awesome', 'https://use.fontawesome.com/5ea8826258.js', array( 'jquery' ), $this->version, true );
+		wp_enqueue_script( 'jqueryUI', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js', array( 'jquery' ), true );
 
 
 	}
